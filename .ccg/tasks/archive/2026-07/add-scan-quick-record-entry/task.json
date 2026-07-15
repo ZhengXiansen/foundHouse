@@ -1,0 +1,12 @@
+{
+  "id": "add-scan-quick-record-entry",
+  "title": "在扫楼页新增快速记录入口并验证正式包",
+  "status": "completed",
+  "complexity": "S",
+  "risk": "low",
+  "domain": "mobile",
+  "currentPhase": "completed",
+  "nextAction": "归档任务并记录归档提交结果",
+  "createdAt": "2026-07-03T23:06:42.8803649Z",
+  "branch": "main"
+}

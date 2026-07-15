@@ -1,0 +1,6 @@
+{"path":"found-house-app/lib/features/common/delete_confirmation.dart","kind":"implementation","note":"Shared SwipeDeleteAction fix: hide destructive background until reveal"}
+{"path":"found-house-app/test/features/scan_map_page_test.dart","kind":"test","note":"Pixel regression test for default-hidden red delete background plus existing swipe coverage"}
+{"path":".ccg/spec/guides/index.md","kind":"spec","note":"Added rule: hidden swipe delete actions must not prepaint risk red behind margins/rounded cards"}
+{"path":"found-house-app/lib/features/scan/village_home_page.dart","kind":"usage","note":"Village card uses shared SwipeDeleteAction"}
+{"path":"found-house-app/lib/features/scan/village_detail_page.dart","kind":"usage","note":"Building and village-detail house cards use shared SwipeDeleteAction"}
+{"path":"found-house-app/lib/features/house/house_list_page.dart","kind":"usage","note":"House list card uses shared SwipeDeleteAction"}

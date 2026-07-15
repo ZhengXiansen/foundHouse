@@ -1,0 +1,68 @@
+{
+  "version": "mvp-2026-07-02",
+  "provider": "amap",
+  "description": "业务 POI 类别 → 高德 WebService POI 分类。用于 /api/map/nearby-summary 的 categories 参数展开为高德 types 查询。typecode 为高德官方《POI分类编码表》大类/中类编码，最终以高德最新官方分类表为准（见 verifyNote）。",
+  "verifyNote": "以下 typecode 依据高德 WebService『POI 分类编码 (AMap_adcode_citycode / poi 分类)』通用编码整理。上线前须用高德官方 Excel《poi分类与编码》最新版逐项复核，尤其是 market(菜市场) 与 police(警务室) 的中类编码，避免分类漂移导致统计偏差。",
+  "usage": {
+    "keyword_vs_typecode": "高德周边搜索 (around) 同时支持 keywords 与 types。POI 统计优先用 types(typecode) 精确过滤；typecode 覆盖不全的语义类(如 market 菜市场)辅以 keywords 兜底。",
+    "multi_type": "同一业务类别可映射多个 typecode，查询时以 | 分隔拼接。"
+  },
+  "categories": {
+    "metro": {
+      "cnName": "地铁站",
+      "typecodes": ["150500"],
+      "keywordsFallback": ["地铁站"],
+      "note": "150500 = 交通设施服务-地铁站"
+    },
+    "bus": {
+      "cnName": "公交站",
+      "typecodes": ["150700"],
+      "keywordsFallback": ["公交车站"],
+      "note": "150700 = 交通设施服务-公交车站"
+    },
+    "supermarket": {
+      "cnName": "超市",
+      "typecodes": ["060400"],
+      "keywordsFallback": ["超市"],
+      "note": "060400 = 购物服务-超级市场"
+    },
+    "market": {
+      "cnName": "菜市场",
+      "typecodes": ["060700"],
+      "keywordsFallback": ["菜市场", "农贸市场"],
+      "note": "060700 = 购物服务-市场；菜市场语义须配合 keywords，typecode 上线前复核"
+    },
+    "convenience": {
+      "cnName": "便利店",
+      "typecodes": ["060200"],
+      "keywordsFallback": ["便利店"],
+      "note": "060200 = 购物服务-便民商店/便利店"
+    },
+    "pharmacy": {
+      "cnName": "药店",
+      "typecodes": ["090601"],
+      "keywordsFallback": ["药店"],
+      "note": "090601 = 医疗保健服务-药房"
+    },
+    "hospital": {
+      "cnName": "医院",
+      "typecodes": ["090100", "090200"],
+      "keywordsFallback": ["医院"],
+      "note": "090100 综合医院 / 090200 专科医院"
+    },
+    "restaurant": {
+      "cnName": "餐饮",
+      "typecodes": ["050000"],
+      "keywordsFallback": ["餐饮"],
+      "note": "050000 = 餐饮服务大类"
+    },
+    "police": {
+      "cnName": "警务室/派出所",
+      "typecodes": ["130100", "130103"],
+      "keywordsFallback": ["派出所", "警务室", "公安局"],
+      "note": "130100 政府机关-公检法机构；警务室中类编码上线前复核，语义配合 keywords"
+    }
+  },
+  "radiiMeters": [300, 800, 1500],
+  "scoringUsage": "nearby_score 计算读取 300/800m 内 metro/bus/supermarket/market/convenience/pharmacy/restaurant 计数；用户主观修正(user_correction_json)优先于系统统计。详见 score-rule-v0.json nearby 部分。"
+}

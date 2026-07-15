@@ -1,0 +1,13 @@
+{
+  "id": "reinstall-release-apk-092459",
+  "title": "重新安装 release APK",
+  "status": "completed",
+  "complexity": "S",
+  "risk": "low",
+  "domain": "mobile",
+  "currentPhase": "completed",
+  "nextAction": "已安装 release APK 并验证启动，已归档",
+  "createdAt": "2026-07-08T01:24:59Z",
+  "branch": "unknown",
+  "completedAt": "2026-07-08T01:26:46Z"
+}

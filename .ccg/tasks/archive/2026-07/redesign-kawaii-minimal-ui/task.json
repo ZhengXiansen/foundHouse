@@ -1,0 +1,12 @@
+{
+  "id": "redesign-kawaii-minimal-ui",
+  "title": "为租房扫楼应用重设计 Kawaii Minimal 界面，同时保留既有业务逻辑",
+  "status": "completed",
+  "complexity": "L+",
+  "risk": "medium",
+  "domain": "frontend",
+  "currentPhase": "completed",
+  "nextAction": "已完成，待归档",
+  "createdAt": "2026-07-10T00:00:00+08:00",
+  "branch": "main"
+}

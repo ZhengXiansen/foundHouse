@@ -1,0 +1,12 @@
+{
+  "branch": "main",
+  "complexity": "S",
+  "currentPhase": "completed",
+  "status": "completed",
+  "id": "fix-flutter-create-widget-test",
+  "domain": "frontend",
+  "title": "修复 flutter create 自动生成 widget_test 引用不存在 MyApp 导致 analyze/test 失败",
+  "nextAction": "archived; root has no git repository so CCG archive commit is not possible here",
+  "risk": "low",
+  "createdAt": "2026-07-03T17:49:59Z"
+}

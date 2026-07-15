@@ -1,0 +1,12 @@
+{
+  "id": "reinstall-release-apk",
+  "title": "重新安装 release APK",
+  "status": "completed",
+  "complexity": "S",
+  "risk": "low",
+  "domain": "mobile",
+  "currentPhase": "completed",
+  "nextAction": "归档任务；根目录不是 Git 仓库则跳过归档提交",
+  "createdAt": "2026-07-07T21:06:37Z",
+  "branch": "unknown"
+}

@@ -1,0 +1,12 @@
+{
+  "id": "install-release-to-real-device",
+  "complexity": "S",
+  "branch": "main",
+  "status": "completed",
+  "title": "安装正式版到 Android 真机",
+  "nextAction": "release APK 已安装到真机并完成启动烟测；归档任务",
+  "createdAt": "2026-07-06T19:55:20Z",
+  "risk": "low",
+  "domain": "mobile-release",
+  "currentPhase": "completed"
+}

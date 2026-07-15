@@ -1,0 +1,12 @@
+{
+  "id": "add-switchable-kawaii-themes",
+  "title": "为 Kawaii Minimal 界面添加可持久化的主题切换",
+  "status": "completed",
+  "complexity": "L+",
+  "risk": "medium",
+  "domain": "frontend",
+  "currentPhase": "completed",
+  "nextAction": "已验证并归档",
+  "createdAt": "2026-07-10T05:19:15.9420841+08:00",
+  "branch": "main"
+}

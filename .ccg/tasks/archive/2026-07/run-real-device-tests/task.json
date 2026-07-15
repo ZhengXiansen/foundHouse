@@ -1,0 +1,13 @@
+{
+  "id": "run-real-device-tests",
+  "title": "开始真机测试",
+  "status": "completed",
+  "complexity": "S",
+  "risk": "medium",
+  "domain": "mobile",
+  "currentPhase": "completed",
+  "nextAction": "已完成真机测试、release 重装验证和报告归档准备",
+  "createdAt": "2026-07-07T20:20:32Z",
+  "branch": "main",
+  "completedAt": "2026-07-07T20:42:31Z"
+}

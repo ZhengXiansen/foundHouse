@@ -1,0 +1,12 @@
+{
+  "id": "fix-red-swipe-delete-protrusion",
+  "title": "修复首页/村详情/房源列表记录右侧红色突出块并优化 UI",
+  "status": "completed",
+  "complexity": "M",
+  "risk": "medium",
+  "domain": "mobile-ui",
+  "currentPhase": "completed",
+  "nextAction": "已完成并归档；根目录不是 Git 仓库，跳过归档提交",
+  "createdAt": "2026-07-07T20:55:18Z",
+  "branch": "unknown"
+}

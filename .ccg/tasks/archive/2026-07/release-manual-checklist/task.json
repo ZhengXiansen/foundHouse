@@ -1,0 +1,12 @@
+{
+  "status": "completed",
+  "complexity": "S",
+  "id": "release-manual-checklist",
+  "currentPhase": "completed",
+  "title": "发布前人工检查清单",
+  "domain": "qa-docs",
+  "nextAction": "任务已完成，归档；根目录不是 Git 仓库，归档提交跳过",
+  "branch": "main",
+  "createdAt": "2026-07-06T19:39:31Z",
+  "risk": "low"
+}

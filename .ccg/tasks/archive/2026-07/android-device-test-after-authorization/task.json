@@ -1,0 +1,12 @@
+{
+  "status": "completed",
+  "branch": "main",
+  "createdAt": "2026-07-06T17:06:05Z",
+  "id": "android-device-test-after-authorization",
+  "nextAction": "已归档；根目录不是 Git repo，无法提交归档 commit",
+  "title": "手机 USB 调试授权后执行 Android 真机主流程测试",
+  "domain": "flutter-app",
+  "complexity": "S",
+  "risk": "low",
+  "currentPhase": "completed"
+}

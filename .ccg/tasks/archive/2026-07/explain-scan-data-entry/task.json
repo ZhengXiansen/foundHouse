@@ -1,0 +1,12 @@
+{
+  "id": "explain-scan-data-entry",
+  "title": "说明扫楼页如何开始录入数据",
+  "status": "completed",
+  "complexity": "S",
+  "risk": "low",
+  "domain": "mobile",
+  "currentPhase": "completed",
+  "nextAction": "已说明当前版本缺少可见入口，建议实现扫楼页快速记录按钮",
+  "createdAt": "2026-07-03T22:59:32.9447054Z",
+  "branch": "main"
+}

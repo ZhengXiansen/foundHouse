@@ -1,0 +1,12 @@
+{"path":"found-house-app/lib/features/scan/quick_record_page.dart","reason":"Camera/gallery entry, pending photo behavior, immediate preview UI."}
+{"path":"found-house-app/lib/data/local_files/photo_store.dart","reason":"Local cache/legacy photo copy and delete behavior."}
+{"path":"found-house-app/lib/data/db/tables.dart","reason":"PhotoAssets Drift schema needs OSS metadata fields."}
+{"path":"found-house-app/lib/data/db/app_database.dart","reason":"schemaVersion and v2→v3 migration."}
+{"path":"found-house-app/lib/data/models/house_models.dart","reason":"PhotoAsset domain model and storage provider constants."}
+{"path":"found-house-app/lib/data/models/mappers.dart","reason":"PhotoAsset row/domain mapping."}
+{"path":"found-house-app/lib/data/repositories/house_repository.dart","reason":"House photo metadata insert/query and stream touch behavior."}
+{"path":"found-house-app/lib/data/repositories/village_repository.dart","reason":"Owner-aware photo metadata consistency."}
+{"path":"found-house-app/lib/data/providers.dart","reason":"PhotoUploader provider and no-localhost config pattern."}
+{"path":"found-house-bff/src/app.ts","reason":"Register new photos route."}
+{"path":"found-house-bff/src/infra/errors.ts","reason":"OSS-specific stable error codes."}
+{"path":"found-house-bff/src/modules/map/*.ts","reason":"Fastify route/schema/test style to mirror for photos module."}

@@ -1,0 +1,9 @@
+{"path":"found-house-app/pubspec.yaml","reason":"release version 1.0.0+1"}
+{"path":"found-house-app/android/app/build.gradle.kts","reason":"applicationId/namespace and release signing"}
+{"path":"found-house-app/android/app/src/main/AndroidManifest.xml","reason":"app label and release INTERNET permission"}
+{"path":"found-house-app/android/app/src/main/kotlin/com/zheng/foundhouse/MainActivity.kt","reason":"MainActivity package migration"}
+{"path":"found-house-app/lib/data/providers.dart","reason":"no-BFF default provider behavior"}
+{"path":"found-house-app/lib/integrations/amap/amap_client.dart","reason":"OfflineMapApiClient"}
+{"path":"found-house-app/test/data/providers_test.dart","reason":"TDD coverage for no-BFF behavior"}
+{"path":"found-house-app/docs/ANDROID-RELEASE.md","reason":"release build instructions"}
+{"path":".ccg/spec/guides/index.md","reason":"spec evolution for no-BFF release"}

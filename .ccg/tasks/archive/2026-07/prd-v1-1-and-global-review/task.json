@@ -1,0 +1,12 @@
+{
+  "id": "prd-v1-1-and-global-review",
+  "title": "生成租房扫楼产品 PRD v1.1 并全局 review 代码完成度与质量",
+  "status": "completed",
+  "complexity": "M",
+  "risk": "medium",
+  "domain": "docs/flutter-app",
+  "currentPhase": "completed",
+  "nextAction": "归档任务",
+  "createdAt": "2026-07-04T22:53:06Z",
+  "branch": "main"
+}

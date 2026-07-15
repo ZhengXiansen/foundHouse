@@ -1,0 +1,12 @@
+{
+  "id": "fix-manual-village-flow-review-findings",
+  "title": "修复手动村扫楼流程 review 问题并进行全局 review 和真机测试",
+  "status": "completed",
+  "complexity": "M",
+  "risk": "medium",
+  "domain": "flutter-app",
+  "currentPhase": "completed",
+  "nextAction": "归档任务；根目录不是 Git repo，无法提交归档 commit",
+  "createdAt": "2026-07-06T16:37:35Z",
+  "branch": "main"
+}

@@ -1,0 +1,12 @@
+{
+  "id": "install-release-to-current-phone-again",
+  "title": "再次安装正式版到当前连接的 Android 手机",
+  "status": "completed",
+  "complexity": "S",
+  "risk": "low",
+  "domain": "flutter-app",
+  "currentPhase": "completed",
+  "nextAction": "已安装并完成启动冒烟验证；准备归档",
+  "createdAt": "2026-07-07T02:56:25Z",
+  "branch": "HEAD"
+}

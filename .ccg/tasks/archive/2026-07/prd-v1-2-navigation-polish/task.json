@@ -1,0 +1,12 @@
+{
+  "id": "prd-v1-2-navigation-polish",
+  "title": "PRD v1.2 导航 fallback 与 offstage 残留收尾",
+  "status": "completed",
+  "complexity": "S",
+  "risk": "medium",
+  "domain": "flutter-app",
+  "currentPhase": "completed",
+  "nextAction": "归档任务（根目录非 git 仓库，无法提交归档 commit）",
+  "createdAt": "2026-07-07T00:39:01Z",
+  "branch": "HEAD"
+}

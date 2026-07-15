@@ -1,0 +1,12 @@
+{
+  "id": "android-release-device-smoke-test",
+  "title": "Android release APK 真机安装启动烟测",
+  "status": "completed",
+  "complexity": "S",
+  "risk": "low",
+  "domain": "mobile",
+  "currentPhase": "completed",
+  "nextAction": "归档 CCG 任务并汇报真机烟测结果",
+  "createdAt": "2026-07-03T22:48:51.3712464Z",
+  "branch": "main"
+}

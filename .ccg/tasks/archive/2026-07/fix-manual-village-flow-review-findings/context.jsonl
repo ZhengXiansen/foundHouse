@@ -1,0 +1,14 @@
+{"path":"found-house-app/lib/data/db/app_database.dart","reason":"Drift schemaVersion/onUpgrade migration v1->v2"}
+{"path":"found-house-app/lib/data/db/tables.dart","reason":"PhotoAssets/HouseRecords/Villages/Buildings schema"}
+{"path":"found-house-app/lib/data/repositories/house_repository.dart","reason":"House photo APIs and compatibility query"}
+{"path":"found-house-app/lib/data/repositories/village_repository.dart","reason":"Village/building/photo owner APIs"}
+{"path":"found-house-app/lib/features/scan/quick_record_page.dart","reason":"Save success navigation to detail"}
+{"path":"found-house-app/lib/features/scan/village_detail_page.dart","reason":"Building card/action layout"}
+{"path":"found-house-app/lib/app/router.dart","reason":"go_router route targets"}
+{"path":"found-house-app/test/data/house_repository_test.dart","reason":"repository data test patterns"}
+{"path":"found-house-app/test/data/village_repository_test.dart","reason":"village repository test patterns"}
+{"path":"found-house-app/test/features/scan_map_page_test.dart","reason":"manual scan widget test patterns"}
+{"path":"found-house-app/integration_test/full_device_flow_test.dart","reason":"Android device flow candidate"}
+{"path":"CLAUDE.md","reason":"possibly outdated map-first docs"}
+{"path":"found-house-app/CLAUDE.md","reason":"possibly outdated map-first docs"}
+{"path":"found-house-app/README.md","reason":"possibly outdated map-first docs"}

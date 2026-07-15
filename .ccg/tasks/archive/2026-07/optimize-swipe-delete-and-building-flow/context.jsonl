@@ -1,0 +1,7 @@
+{"path":"found-house-app/lib/features/common/delete_confirmation.dart","reason":"shared delete confirmation and swipe-delete UI"}
+{"path":"found-house-app/lib/features/scan/village_home_page.dart","reason":"village card swipe delete"}
+{"path":"found-house-app/lib/features/scan/village_detail_page.dart","reason":"building card swipe delete and card tap behavior"}
+{"path":"found-house-app/lib/features/scan/quick_record_page.dart","reason":"quick record building selector/input ordering and fixed building context"}
+{"path":"found-house-app/lib/features/house/house_list_page.dart","reason":"building-filtered house list destination and house card swipe delete"}
+{"path":"found-house-app/lib/app/router.dart","reason":"GoRouter route for building-filtered house list"}
+{"path":"found-house-app/test/features/scan_map_page_test.dart","reason":"widget regression tests for requested behavior"}

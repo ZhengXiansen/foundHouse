@@ -1,0 +1,13 @@
+{
+  "id": "remove-map-manual-village-flow",
+  "title": "砍掉地图定位功能并改为村维度手动扫楼流程方案整理",
+  "status": "completed",
+  "complexity": "M",
+  "risk": "medium",
+  "domain": "product/mobile",
+  "currentPhase": "completed",
+  "nextAction": "方案已输出，等待用户决定是否进入实现",
+  "createdAt": "2026-07-05T00:00:00+08:00",
+  "completedAt": "2026-07-05T00:00:00+08:00",
+  "branch": "no-root-git"
+}

@@ -1,0 +1,5 @@
+{"file":"found-house-app/lib/features/common/delete_confirmation.dart","reason":"统一删除确认与滑动背景 helper，需要支持双向滑动背景"}
+{"file":"found-house-app/lib/features/scan/village_home_page.dart","reason":"村卡 Dismissible 删除方向"}
+{"file":"found-house-app/lib/features/scan/village_detail_page.dart","reason":"楼栋与未分楼栋房源 Dismissible 删除方向"}
+{"file":"found-house-app/lib/features/house/house_list_page.dart","reason":"房源列表 Dismissible 删除方向"}
+{"file":"found-house-app/test/features/scan_map_page_test.dart","reason":"右划删除回归与反方向/双向滑动覆盖"}

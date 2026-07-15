@@ -1,0 +1,12 @@
+{
+  "domain": "mobile",
+  "nextAction": "已给出正式版本构建准备清单，待用户确认是否执行配置修改和 release 构建",
+  "risk": "high",
+  "title": "正式版本构建前准备清单",
+  "complexity": "M",
+  "currentPhase": "completed",
+  "createdAt": "2026-07-03T21:58:18Z",
+  "status": "completed",
+  "id": "release-build-readiness-guidance",
+  "branch": "main"
+}

@@ -1,0 +1,12 @@
+{
+  "id": "ali-oss-photo-storage",
+  "title": "将拍照和相册照片改为阿里 OSS 存储并上传后展示",
+  "status": "in_progress",
+  "complexity": "L+",
+  "risk": "high",
+  "domain": "mobile-storage",
+  "currentPhase": "implementation",
+  "nextAction": "运行 RED 测试确认当前实现缺失后开始生产代码",
+  "createdAt": "2026-07-08T00:45:09.5296426Z",
+  "branch": "main"
+}

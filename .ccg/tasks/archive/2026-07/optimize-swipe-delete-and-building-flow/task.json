@@ -1,0 +1,12 @@
+{
+  "id": "optimize-swipe-delete-and-building-flow",
+  "title": "优化滑动删除露出范围、快速记录楼栋入口位置、楼栋点击进入房源列表",
+  "status": "in_progress",
+  "complexity": "M",
+  "risk": "medium",
+  "domain": "flutter-app",
+  "currentPhase": "completed",
+  "nextAction": "归档任务并向用户汇报；等待用户指令再进行真机测试",
+  "createdAt": "2026-07-07T18:48:14Z",
+  "branch": "main"
+}

@@ -1,0 +1,33 @@
+# 引入 Flutter 官方推荐 lint 规则集。
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  # 开启更严格的类型检查，尽早暴露隐式转换/推断问题。
+  language:
+    strict-casts: true
+    strict-inference: true
+    strict-raw-types: true
+  errors:
+    # TODO 注释在脚手架阶段大量存在，降级为忽略，不阻断分析。
+    todo: ignore
+  # 生成产物不参与静态分析。
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+
+linter:
+  rules:
+    # 常用严格 lint（在 flutter_lints 基础上增强）。
+    - prefer_const_constructors
+    - prefer_const_constructors_in_immutables
+    - prefer_const_declarations
+    - prefer_final_locals
+    - prefer_final_in_for_each
+    - avoid_print
+    - avoid_unnecessary_containers
+    - require_trailing_commas
+    - directives_ordering
+    - unawaited_futures
+    - use_key_in_widget_constructors
+    - sort_child_properties_last
+    - unnecessary_late

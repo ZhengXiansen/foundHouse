@@ -1,0 +1,12 @@
+{
+  "title": "PRD v1.2 快速记录显式保存、楼栋补录与右划删除",
+  "branch": "HEAD",
+  "createdAt": "2026-07-06T21:00:29Z",
+  "domain": "flutter-app",
+  "status": "completed",
+  "complexity": "L+",
+  "nextAction": "归档任务",
+  "currentPhase": "completed",
+  "id": "prd-v1-2-quick-record-delete-flow",
+  "risk": "high"
+}

@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-07-07T13:26:57Z",
+  "title": "检查并修复 App 内村、楼栋、房源右划删除未实现/真机不可用问题",
+  "id": "fix-swipe-delete-on-device",
+  "branch": "main",
+  "status": "completed",
+  "risk": "medium",
+  "complexity": "M",
+  "currentPhase": "completed",
+  "nextAction": "无，任务已归档",
+  "domain": "flutter-app"
+}

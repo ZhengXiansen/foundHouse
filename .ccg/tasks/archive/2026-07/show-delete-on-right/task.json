@@ -1,0 +1,12 @@
+{
+  "risk": "medium",
+  "domain": "mobile-ui",
+  "title": "将滑动删除按钮改为右侧显示",
+  "branch": "unknown",
+  "nextAction": "已完成并归档；无需后续操作",
+  "createdAt": "2026-07-08T00:06:30Z",
+  "complexity": "M",
+  "status": "completed",
+  "currentPhase": "completed",
+  "id": "show-delete-on-right"
+}

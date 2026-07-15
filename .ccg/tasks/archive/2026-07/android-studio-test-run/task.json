@@ -1,0 +1,12 @@
+{
+  "id": "android-studio-test-run",
+  "title": "说明如何在 Android Studio 中测试并尝试本地运行项目测试",
+  "status": "completed",
+  "complexity": "S",
+  "risk": "low",
+  "domain": "android",
+  "currentPhase": "completed",
+  "nextAction": "已完成测试并输出 Android Studio 测试说明",
+  "createdAt": "2026-07-03T18:57:31.0411991Z",
+  "branch": "unknown"
+}

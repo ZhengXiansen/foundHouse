@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-07-03T19:24:55Z",
+  "nextAction": "已归档",
+  "title": "制定并执行完整 Android 真机流程测试，生成测试报告",
+  "id": "android-full-device-test-report",
+  "risk": "low",
+  "domain": "mobile-qa",
+  "currentPhase": "completed",
+  "complexity": "L",
+  "status": "completed",
+  "branch": "unknown"
+}

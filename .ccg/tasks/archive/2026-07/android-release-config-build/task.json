@@ -1,0 +1,12 @@
+{
+  "title": "配置 Android 正式构建并尝试生成 release 产物",
+  "status": "completed",
+  "createdAt": "2026-07-03T22:11:42Z",
+  "branch": "main",
+  "domain": "mobile",
+  "complexity": "M",
+  "currentPhase": "completed",
+  "nextAction": "已归档；release APK/AAB 已生成，等待真机重新连接后做 release 烟测",
+  "id": "android-release-config-build",
+  "risk": "high"
+}

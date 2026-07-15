@@ -1,0 +1,12 @@
+{
+  "id": "prd-v1-2-final-release-audit",
+  "title": "PRD v1.2 最终发布审计与真机验证",
+  "status": "completed",
+  "complexity": "M",
+  "risk": "medium",
+  "domain": "flutter-app",
+  "currentPhase": "completed",
+  "nextAction": "归档完成；根目录非 git 仓库，无法提交归档 commit",
+  "createdAt": "2026-07-07T00:00:00Z",
+  "branch": "HEAD"
+}

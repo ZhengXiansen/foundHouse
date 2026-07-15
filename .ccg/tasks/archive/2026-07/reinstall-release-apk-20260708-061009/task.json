@@ -1,0 +1,12 @@
+{
+  "status": "completed",
+  "nextAction": "已重新安装 release APK，并完成安装与启动验证",
+  "createdAt": "2026-07-07T22:07:50Z",
+  "domain": "mobile-release",
+  "branch": "main",
+  "risk": "low",
+  "currentPhase": "completed",
+  "title": "重新安装 release APK",
+  "complexity": "S",
+  "id": "reinstall-release-apk"
+}

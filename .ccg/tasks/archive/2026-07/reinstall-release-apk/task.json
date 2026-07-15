@@ -1,0 +1,12 @@
+{
+  "branch": null,
+  "id": "reinstall-release-apk",
+  "createdAt": "2026-07-07T21:37:35Z",
+  "currentPhase": "completed",
+  "nextAction": "已归档",
+  "status": "completed",
+  "domain": "mobile",
+  "title": "重新安装 release APK",
+  "complexity": "S",
+  "risk": "low"
+}

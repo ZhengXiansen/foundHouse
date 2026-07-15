@@ -1,0 +1,14 @@
+{
+  "id": "fix-review-dev-execution-plan",
+  "title": "根据开发执行计划审查报告修复实现缺口",
+  "status": "completed",
+  "complexity": "L+",
+  "risk": "high",
+  "domain": "fullstack",
+  "currentPhase": "completed",
+  "nextAction": "任务已完成并归档；根目录不是 git 仓库，无法执行归档 commit",
+  "createdAt": "2026-07-02T23:30:00Z",
+  "branch": "workspace-root",
+  "completedAt": "2026-07-04T01:16:22.5002147+08:00",
+  "archivedAt": "2026-07-04T01:17:03.8868142+08:00"
+}

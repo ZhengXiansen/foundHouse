@@ -1,0 +1,51 @@
+# Local AI/tool caches
+.ace-tool/
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.tmp
+*.log
+.idea/
+.vscode/
+
+# Environment files and credentials
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+**/key.properties
+**/local.properties
+
+# Node.js / TypeScript
+**/node_modules/
+**/dist/
+**/coverage/
+*.tsbuildinfo
+
+# Flutter / Dart
+**/.dart_tool/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/.pub-cache/
+**/.pub/
+**/build/
+
+# Android / native build caches
+**/.gradle/
+**/.cxx/
+*.apk
+*.aab
+*.ipa
+*.dSYM/
+
+# Python caches used by local tools
+**/__pycache__/
+*.py[cod]

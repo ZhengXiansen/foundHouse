@@ -1,0 +1,12 @@
+{
+  "nextAction": "已完成并归档",
+  "createdAt": "2026-07-04T19:54:02Z",
+  "domain": "flutter-app",
+  "title": "实现去地图化的村/楼栋/房源手动扫楼流程",
+  "branch": "main",
+  "status": "completed",
+  "risk": "high",
+  "currentPhase": "completed",
+  "complexity": "L+",
+  "id": "implement-manual-village-flow"
+}

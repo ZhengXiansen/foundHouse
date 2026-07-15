@@ -1,0 +1,1482 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>foundHouse · Web 原型预览</title>
+  <style>
+    :root {
+      --bg: #FFFAF7;
+      --bg-blush: #FFF1F6;
+      --surface: #FFFFFF;
+      --surface-soft: #FFF7FA;
+      --surface-mint: #F0FBF7;
+      --surface-yellow: #FFF9E8;
+      --text: #33263B;
+      --text-2: #756A7D;
+      --divider: #F0DFE8;
+      --primary: #FF5C92;
+      --primary-dark: #E9477D;
+      --secondary: #8B6CFF;
+      --mint: #51C9A6;
+      --sunshine: #F5C556;
+      --commute: #4C7DFF;
+      --warning: #D98937;
+      --risk: #DC5A75;
+      --offline: #756D7C;
+      --radius-card: 18px;
+      --radius-btn: 14px;
+      --radius-input: 12px;
+      --radius-pill: 999px;
+      --shadow-card: 0 8px 24px rgba(51, 38, 59, 0.06);
+      --phone-w: 390px;
+      --phone-h: 844px;
+      --safe-b: 20px;
+      --tab-h: 64px;
+      --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1200px 600px at 10% -10%, #ffe4ef 0%, transparent 55%),
+        radial-gradient(900px 500px at 100% 0%, #efe8ff 0%, transparent 50%),
+        #f4eef2;
+      min-height: 100%;
+    }
+    button, input, select, textarea { font: inherit; color: inherit; }
+    button { cursor: pointer; border: 0; background: none; }
+    .page-shell {
+      min-height: 100%;
+      display: grid;
+      grid-template-columns: minmax(280px, 380px) 1fr;
+      gap: 28px;
+      padding: 28px clamp(16px, 3vw, 40px);
+      max-width: 1320px;
+      margin: 0 auto;
+    }
+    @media (max-width: 960px) {
+      .page-shell { grid-template-columns: 1fr; justify-items: center; }
+      .side-panel { width: min(100%, 560px); }
+    }
+    .side-panel h1 { margin: 0 0 8px; font-size: 28px; letter-spacing: -0.02em; }
+    .side-panel .lead { margin: 0 0 16px; color: var(--text-2); line-height: 1.55; font-size: 14px; }
+    .badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 10px; border-radius: var(--radius-pill);
+      background: rgba(255,255,255,0.75); border: 1px solid var(--divider);
+      font-size: 12px; color: var(--text-2);
+    }
+    .badge strong { color: var(--text); font-weight: 600; }
+    .nav-group { margin: 0 0 12px; }
+    .nav-group-title {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+      color: var(--text-2); text-transform: uppercase; margin: 0 0 6px 4px;
+    }
+    .nav-list { display: grid; gap: 6px; margin: 0 0 14px; padding: 0; list-style: none; }
+    .nav-list button {
+      width: 100%; text-align: left; padding: 10px 12px; border-radius: 14px;
+      background: rgba(255,255,255,0.72); border: 1px solid transparent;
+      display: flex; justify-content: space-between; align-items: center;
+      transition: 160ms var(--ease);
+    }
+    .nav-list button:hover { border-color: var(--divider); transform: translateY(-1px); }
+    .nav-list button.active { background: #fff; border-color: #ffd0e1; box-shadow: var(--shadow-card); }
+    .nav-list .name { font-weight: 600; font-size: 13px; }
+    .nav-list .hint { font-size: 11px; color: var(--text-2); }
+    .hint-card {
+      background: rgba(255,255,255,0.78); border: 1px solid var(--divider);
+      border-radius: 16px; padding: 14px 16px; font-size: 13px; line-height: 1.55; color: var(--text-2);
+    }
+    .hint-card code {
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 12px;
+      background: #fff; padding: 1px 6px; border-radius: 6px; border: 1px solid var(--divider); color: var(--text);
+    }
+    .hint-card ul { margin: 8px 0 0; padding-left: 18px; }
+    .device-stage { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+    .device-frame {
+      width: var(--phone-w); height: var(--phone-h); border-radius: 42px; padding: 12px;
+      background: linear-gradient(160deg, #2a2230, #4a3a4f);
+      box-shadow: 0 30px 80px rgba(51, 38, 59, 0.28), inset 0 0 0 1px rgba(255,255,255,0.08);
+      position: relative;
+    }
+    .device-frame::before {
+      content: ""; position: absolute; top: 18px; left: 50%; transform: translateX(-50%);
+      width: 108px; height: 28px; border-radius: 20px; background: #1a141f; z-index: 5;
+    }
+    .device-screen {
+      width: 100%; height: 100%; border-radius: 32px; overflow: hidden;
+      background: linear-gradient(180deg, var(--bg-blush) 0%, var(--bg) 42%, var(--bg) 100%);
+      position: relative; display: flex; flex-direction: column;
+    }
+    .status-bar {
+      height: 48px; padding: 14px 22px 0; display: flex; justify-content: space-between;
+      align-items: center; font-size: 12px; font-weight: 600; color: var(--text); flex-shrink: 0;
+    }
+    .status-bar .right { display: flex; gap: 8px; align-items: center; opacity: 0.8; }
+    .app-root { flex: 1; min-height: 0; display: flex; flex-direction: column; position: relative; }
+    .screen { display: none; flex: 1; min-height: 0; flex-direction: column; }
+    .screen.active { display: flex; }
+    .scroll {
+      flex: 1; min-height: 0; overflow: auto;
+      padding: 0 16px calc(var(--tab-h) + var(--safe-b) + 12px); scrollbar-width: thin;
+    }
+    .scroll.no-tab { padding-bottom: calc(var(--safe-b) + 96px); }
+    .scroll.plain { padding-bottom: calc(var(--safe-b) + 16px); }
+    .scroll::-webkit-scrollbar { width: 4px; }
+    .scroll::-webkit-scrollbar-thumb { background: #e8cfdc; border-radius: 4px; }
+    .app-header {
+      padding: 4px 16px 10px; display: flex; align-items: flex-start;
+      justify-content: space-between; gap: 12px; flex-shrink: 0;
+    }
+    .app-header.compact { align-items: center; padding-top: 8px; }
+    .eyebrow { font-size: 12px; color: var(--text-2); font-weight: 500; margin-bottom: 2px; }
+    .title-lg { margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; }
+    .title-md { margin: 0; font-size: 18px; font-weight: 700; line-height: 1.25; }
+    .sub { margin: 4px 0 0; font-size: 13px; color: var(--text-2); line-height: 1.45; }
+    .icon-bubble {
+      width: 44px; height: 44px; border-radius: 16px; display: grid; place-items: center;
+      background: linear-gradient(145deg, #fff, var(--surface-soft)); border: 1px solid var(--divider);
+      color: var(--primary); box-shadow: var(--shadow-card); flex-shrink: 0;
+    }
+    .icon-bubble svg { width: 22px; height: 22px; }
+    .icon-btn {
+      width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center;
+      background: rgba(255,255,255,0.8); border: 1px solid var(--divider); color: var(--text);
+    }
+    .icon-btn:active { transform: scale(0.97); }
+    .icon-btn svg { width: 20px; height: 20px; }
+    .summary-strip {
+      margin: 0 16px 12px; padding: 12px 14px; border-radius: 16px;
+      background: rgba(255,255,255,0.72); border: 1px solid var(--divider);
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+    }
+    .summary-strip .cell { text-align: center; }
+    .summary-strip .num { font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--primary-dark); }
+    .summary-strip .lbl { font-size: 11px; color: var(--text-2); margin-top: 2px; }
+    .card {
+      background: var(--surface); border: 1px solid rgba(240, 223, 232, 0.9);
+      border-radius: var(--radius-card); box-shadow: var(--shadow-card); padding: 14px;
+    }
+    .card + .card { margin-top: 10px; }
+    .card.pressable {
+      width: 100%; text-align: left;
+      transition: transform 120ms var(--ease), box-shadow 120ms var(--ease);
+    }
+    .card.pressable:active { transform: scale(0.985); }
+    .village-row { display: grid; grid-template-columns: 44px 1fr auto; gap: 12px; align-items: center; }
+    .village-row .meta { margin-top: 4px; font-size: 12px; color: var(--text-2); display: flex; flex-wrap: wrap; gap: 8px; }
+    .village-row .chev { color: var(--text-2); opacity: 0.7; }
+    .stat-pill {
+      display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px;
+      border-radius: var(--radius-pill); background: var(--surface-soft); font-variant-numeric: tabular-nums;
+    }
+    .empty {
+      margin-top: 32px; padding: 28px 18px; text-align: center; border-radius: 22px;
+      background: rgba(255,255,255,0.65); border: 1px dashed #efc9d8;
+    }
+    .empty .icon-bubble { margin: 0 auto 14px; width: 56px; height: 56px; border-radius: 20px; }
+    .empty h3 { margin: 0 0 8px; font-size: 18px; }
+    .empty p { margin: 0 0 18px; color: var(--text-2); font-size: 13px; line-height: 1.5; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      min-height: 48px; padding: 0 18px; border-radius: var(--radius-btn);
+      font-weight: 600; font-size: 15px; transition: transform 100ms var(--ease), opacity 120ms;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn:disabled { opacity: 0.45; pointer-events: none; }
+    .btn-primary {
+      background: linear-gradient(180deg, #ff6d9d, var(--primary)); color: #fff;
+      box-shadow: 0 8px 18px rgba(255, 92, 146, 0.28);
+    }
+    .btn-secondary { background: #fff; border: 1px solid var(--divider); color: var(--text); }
+    .btn-tonal { background: #ffe5ef; color: var(--primary-dark); }
+    .btn-ghost { color: var(--text-2); min-height: 40px; }
+    .btn-block { width: 100%; }
+    .btn-danger-text { color: var(--risk); }
+    .fab-row {
+      position: absolute; right: 16px; bottom: calc(var(--tab-h) + var(--safe-b) + 12px); z-index: 4;
+    }
+    .fab {
+      min-width: 56px; height: 56px; padding: 0 18px; border-radius: var(--radius-pill);
+      background: linear-gradient(180deg, #ff6d9d, var(--primary)); color: #fff; font-weight: 700;
+      box-shadow: 0 12px 28px rgba(255, 92, 146, 0.35); display: inline-flex; align-items: center; gap: 8px;
+    }
+    .tabbar {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      height: calc(var(--tab-h) + var(--safe-b)); padding: 6px 10px var(--safe-b);
+      background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
+      border-top: 1px solid var(--divider); display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; z-index: 6;
+    }
+    .tabbar button {
+      border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 2px; color: var(--text-2); font-size: 10px; font-weight: 500; min-height: 48px;
+    }
+    .tabbar button.active { color: var(--primary-dark); background: #fff0f5; }
+    .tabbar svg { width: 20px; height: 20px; }
+    .chip {
+      display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px;
+      border-radius: var(--radius-pill); font-size: 12px; font-weight: 600;
+      background: var(--surface-soft); color: var(--text-2); border: 1px solid transparent;
+    }
+    .chip.ok { background: var(--surface-mint); color: #1f7a62; }
+    .chip.warn { background: #fff3e4; color: #9a5b16; }
+    .chip.risk { background: #ffe8ee; color: var(--risk); }
+    .chip.draft { background: #f1edf8; color: #5f4f8a; }
+    .chip.shortlist { background: #eaf0ff; color: var(--commute); }
+    .chip.chosen { background: #e8faf3; color: #1f7a62; }
+    .section-title {
+      margin: 18px 0 8px; font-size: 13px; font-weight: 600; color: var(--text-2); letter-spacing: 0.02em;
+    }
+    .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
+    .metric { background: var(--surface-soft); border-radius: 14px; padding: 10px 8px; text-align: center; }
+    .metric .v { font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .metric .k { font-size: 11px; color: var(--text-2); margin-top: 2px; }
+    .metric .v.commute { color: var(--commute); }
+    .metric .v.score { color: var(--primary-dark); }
+    .metric .v.risk { color: var(--risk); }
+    .bar-row { margin: 8px 0; }
+    .bar-row .top { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; }
+    .bar-track { height: 8px; border-radius: 999px; background: #f3e6ec; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: inherit; background: linear-gradient(90deg, #ff8fb3, var(--primary)); }
+    .bar-fill.mint { background: linear-gradient(90deg, #7ad9bd, var(--mint)); }
+    .bar-fill.blue { background: linear-gradient(90deg, #7aa0ff, var(--commute)); }
+    .bar-fill.purple { background: linear-gradient(90deg, #b39cff, var(--secondary)); }
+    .bar-fill.warn { background: linear-gradient(90deg, #f0b46a, var(--warning)); }
+    .list-item {
+      display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center;
+      padding: 12px 0; border-bottom: 1px solid var(--divider);
+    }
+    .list-item:last-child { border-bottom: 0; }
+    .list-item .name { font-weight: 600; font-size: 15px; }
+    .list-item .meta { font-size: 12px; color: var(--text-2); margin-top: 3px; }
+    .price { font-weight: 700; font-variant-numeric: tabular-nums; color: var(--primary-dark); white-space: nowrap; }
+    .bottom-cta {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      padding: 12px 16px calc(var(--safe-b) + 8px);
+      background: linear-gradient(180deg, rgba(255,250,247,0), rgba(255,250,247,0.95) 28%, #fff);
+      display: grid; gap: 8px; z-index: 5;
+    }
+    .bottom-cta.dual { grid-template-columns: 1fr 1.4fr; align-items: center; }
+    .bottom-cta.triple { grid-template-columns: 1fr 1fr 1.2fr; }
+    .field { margin-bottom: 12px; }
+    .field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+    .field .hint { font-weight: 400; color: var(--text-2); font-size: 12px; }
+    .control {
+      width: 100%; min-height: 48px; border-radius: var(--radius-input);
+      border: 1px solid var(--divider); background: #fff; padding: 0 14px; outline: none;
+    }
+    .control:focus { border-color: #ffb3cb; box-shadow: 0 0 0 3px rgba(255,92,146,0.12); }
+    textarea.control { min-height: 88px; padding: 12px 14px; resize: vertical; }
+    .seg { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .seg.three { grid-template-columns: repeat(3, 1fr); }
+    .seg button {
+      min-height: 40px; border-radius: 12px; border: 1px solid var(--divider);
+      background: #fff; font-size: 13px; font-weight: 600; color: var(--text-2);
+    }
+    .seg button.on { background: #ffe5ef; border-color: #ffc2d6; color: var(--primary-dark); }
+    .photo-rail { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
+    .photo-tile {
+      width: 72px; height: 72px; border-radius: 14px;
+      background: linear-gradient(145deg, #fff, #ffeaf2); border: 1px dashed #efc9d8;
+      display: grid; place-items: center; color: var(--text-2); font-size: 11px;
+      flex-shrink: 0; text-align: center; padding: 6px;
+    }
+    .photo-tile.filled {
+      border-style: solid;
+      background: linear-gradient(160deg, rgba(255,92,146,0.15), rgba(139,108,255,0.12)), #fff;
+      color: var(--text); font-weight: 600;
+    }
+    .risk-item {
+      display: grid; grid-template-columns: 20px 1fr; gap: 8px; padding: 10px 0;
+      border-bottom: 1px solid var(--divider); font-size: 13px; line-height: 1.45;
+    }
+    .risk-item:last-child { border-bottom: 0; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; margin-top: 5px; background: var(--warning); }
+    .dot.blocker { background: var(--risk); }
+    .compare-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 12px; }
+    .compare-table th, .compare-table td {
+      padding: 10px 8px; border-bottom: 1px solid var(--divider); text-align: right;
+      font-variant-numeric: tabular-nums; vertical-align: top;
+    }
+    .compare-table th:first-child, .compare-table td:first-child {
+      text-align: left; position: sticky; left: 0; background: #fff; color: var(--text-2);
+      font-weight: 500; min-width: 72px;
+    }
+    .compare-table thead th { font-weight: 700; color: var(--text); background: var(--surface-soft); }
+    .compare-table .best { background: #f0fbf7; color: #1f7a62; font-weight: 700; }
+    .table-wrap { overflow: auto; border-radius: 16px; border: 1px solid var(--divider); background: #fff; }
+    .overlay {
+      position: absolute; inset: 0; background: rgba(51, 38, 59, 0.34);
+      display: none; align-items: flex-end; z-index: 20;
+    }
+    .overlay.show { display: flex; }
+    .sheet {
+      width: 100%; background: #fff; border-radius: 22px 22px 0 0;
+      padding: 10px 16px calc(var(--safe-b) + 12px);
+      box-shadow: 0 -12px 40px rgba(51, 38, 59, 0.16);
+      animation: sheet-in 220ms var(--ease) forwards;
+    }
+    @keyframes sheet-in {
+      from { transform: translateY(24px); opacity: 0.6; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .sheet-handle { width: 40px; height: 4px; border-radius: 4px; background: #e8d5df; margin: 4px auto 12px; }
+    .sheet h3 { margin: 0 0 4px; font-size: 18px; }
+    .sheet .desc { margin: 0 0 14px; color: var(--text-2); font-size: 13px; }
+    .toast {
+      position: absolute; left: 50%; bottom: calc(var(--tab-h) + var(--safe-b) + 18px);
+      transform: translateX(-50%) translateY(12px); background: #33263B; color: #fff;
+      padding: 10px 14px; border-radius: 12px; font-size: 13px; opacity: 0; pointer-events: none;
+      transition: 200ms var(--ease); z-index: 30; max-width: 86%; text-align: center;
+      box-shadow: 0 10px 28px rgba(51,38,59,0.25);
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast.higher { bottom: calc(var(--safe-b) + 96px); }
+    .settings-row {
+      display: flex; justify-content: space-between; align-items: center; gap: 12px;
+      padding: 14px 0; border-bottom: 1px solid var(--divider);
+    }
+    .settings-row:last-child { border-bottom: 0; }
+    .settings-row.nav { width: 100%; text-align: left; }
+    .swatch-row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .swatch {
+      width: 36px; height: 36px; border-radius: 12px; border: 2px solid transparent;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+    }
+    .swatch.on { border-color: var(--text); }
+    .device-caption { font-size: 12px; color: #6d6074; text-align: center; }
+    .hidden { display: none !important; }
+    .filter-row { display: flex; gap: 8px; overflow-x: auto; padding: 0 0 10px; }
+    .filter-chip {
+      flex-shrink: 0; min-height: 34px; padding: 0 12px; border-radius: var(--radius-pill);
+      border: 1px solid var(--divider); background: #fff; font-size: 12px; font-weight: 600; color: var(--text-2);
+    }
+    .filter-chip.on { background: #ffe5ef; border-color: #ffc2d6; color: var(--primary-dark); }
+    .check-item { padding: 12px 0; border-bottom: 1px solid var(--divider); }
+    .check-item:last-child { border-bottom: 0; }
+    .check-item .label { font-weight: 600; font-size: 14px; margin-bottom: 8px; }
+    .check-seg { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+    .check-seg button {
+      min-height: 36px; border-radius: 10px; border: 1px solid var(--divider);
+      background: #fff; font-size: 11px; font-weight: 600; color: var(--text-2);
+    }
+    .check-seg button.on-good { background: #e8faf3; border-color: #9adfc8; color: #1f7a62; }
+    .check-seg button.on-ok { background: #fff7e8; border-color: #f0d39a; color: #9a5b16; }
+    .check-seg button.on-bad { background: #ffe8ee; border-color: #f3b0bf; color: var(--risk); }
+    .check-seg button.on-ns { background: #f3eef8; border-color: #d9d0e8; color: #5f4f8a; }
+    .module-head {
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;
+    }
+    .progress-mini {
+      height: 6px; border-radius: 999px; background: #f3e6ec; overflow: hidden; margin-top: 6px;
+    }
+    .progress-mini > i { display: block; height: 100%; background: var(--mint); border-radius: inherit; }
+    .score-ring-wrap { display: grid; place-items: center; padding: 8px 0 4px; }
+    .score-ring {
+      width: 120px; height: 120px; border-radius: 50%;
+      background:
+        radial-gradient(circle at center, #fff 0 54%, transparent 55%),
+        conic-gradient(var(--primary) 0 78%, #f3e6ec 78% 100%);
+      display: grid; place-items: center;
+    }
+    .score-ring .inner { text-align: center; }
+    .score-ring .big { font-size: 32px; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
+    .score-ring .cap { font-size: 11px; color: var(--text-2); margin-top: 2px; }
+    .weight-row {
+      display: grid; grid-template-columns: 56px 1fr 48px; gap: 8px; align-items: center; margin: 8px 0;
+    }
+    .weight-row input[type="range"] { width: 100%; accent-color: var(--primary); }
+    .toggle {
+      width: 44px; height: 26px; border-radius: 999px; background: #e8dce3; position: relative; flex-shrink: 0;
+    }
+    .toggle.on { background: #ffb3cb; }
+    .toggle::after {
+      content: ""; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px;
+      border-radius: 50%; background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,0.12); transition: 160ms var(--ease);
+    }
+    .toggle.on::after { left: 21px; }
+    .info-tile {
+      display: grid; grid-template-columns: 36px 1fr; gap: 10px; padding: 12px 0;
+      border-bottom: 1px solid var(--divider);
+    }
+    .info-tile:last-child { border-bottom: 0; }
+    .info-tile .ico {
+      width: 36px; height: 36px; border-radius: 12px; background: var(--surface-soft);
+      display: grid; place-items: center; color: var(--primary);
+    }
+    .info-tile .t { font-weight: 600; font-size: 14px; }
+    .info-tile .d { font-size: 12px; color: var(--text-2); margin-top: 2px; line-height: 1.4; }
+    .building-card .row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <aside class="side-panel">
+      <div class="badge-row">
+        <span class="badge"><strong>foundHouse</strong> Web 原型</span>
+        <span class="badge">Kawaii Minimal</span>
+        <span class="badge">对齐 4 Tab 路由</span>
+      </div>
+      <h1>扫楼找房助手</h1>
+      <p class="lead">
+        扩展页：全局房源、楼栋列表、Checklist、评分详情、偏好、隐私。
+        主流程仍为村列表扫楼（非地图首页）。对齐 <code>router.dart</code> + design-system。
+      </p>
+
+      <div class="nav-group">
+        <div class="nav-group-title">Tab / 主路径</div>
+        <ul class="nav-list" id="sideNavMain">
+          <li><button type="button" data-go="scan" class="active"><span class="name">扫楼 · 村列表</span><span class="hint">/scan</span></button></li>
+          <li><button type="button" data-go="village"><span class="name">村详情 · 楼栋</span><span class="hint">villages/:id</span></button></li>
+          <li><button type="button" data-go="building"><span class="name">楼栋房源列表</span><span class="hint">buildings/.../houses</span></button></li>
+          <li><button type="button" data-go="record"><span class="name">快速记录</span><span class="hint">quick-record</span></button></li>
+          <li><button type="button" data-go="detail"><span class="name">房源详情</span><span class="hint">houses/:id</span></button></li>
+          <li><button type="button" data-go="houses"><span class="name">全部房源 Tab</span><span class="hint">/houses</span></button></li>
+          <li><button type="button" data-go="compare"><span class="name">对比导出</span><span class="hint">/compare</span></button></li>
+          <li><button type="button" data-go="settings"><span class="name">设置</span><span class="hint">/settings</span></button></li>
+        </ul>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-title">二级 / 决策</div>
+        <ul class="nav-list" id="sideNavSub">
+          <li><button type="button" data-go="checklist"><span class="name">看房 Checklist</span><span class="hint">五模块四态</span></button></li>
+          <li><button type="button" data-go="score"><span class="name">评分详情</span><span class="hint">houses/:id/score</span></button></li>
+          <li><button type="button" data-go="preference"><span class="name">偏好设置</span><span class="hint">preference</span></button></li>
+          <li><button type="button" data-go="privacy"><span class="name">隐私说明</span><span class="hint">privacy</span></button></li>
+          <li><button type="button" data-go="compare-empty"><span class="name">对比空状态</span><span class="hint">empty</span></button></li>
+        </ul>
+      </div>
+
+      <div class="hint-card">
+        <strong style="color:var(--text)">本地预览</strong>
+        <ul>
+          <li>双击打开本文件，或 <code>npx --yes serve prototypes/web-preview</code></li>
+          <li>底栏 4 Tab：扫楼 / 房源 / 对比 / 设置</li>
+          <li>详情可进 Checklist、评分；设置可进偏好/隐私</li>
+        </ul>
+      </div>
+    </aside>
+
+    <div class="device-stage">
+      <div class="device-frame" aria-label="iPhone 预览框">
+        <div class="device-screen" id="deviceScreen">
+          <div class="status-bar">
+            <span>9:41</span>
+            <span class="right" aria-hidden="true">LTE · 100%</span>
+          </div>
+
+          <div class="app-root" id="appRoot">
+            <!-- 1 Scan -->
+            <section class="screen active" id="screen-scan" data-tab="scan">
+              <header class="app-header">
+                <div>
+                  <div class="eyebrow">foundHouse</div>
+                  <h2 class="title-lg">扫楼</h2>
+                  <p class="sub">先记村，再进村录楼栋与房源</p>
+                </div>
+                <div class="icon-bubble" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V9l8-5 8 5v11"/><path d="M9 20v-6h6v6"/></svg>
+                </div>
+              </header>
+              <div class="summary-strip">
+                <div class="cell"><div class="num" id="statVillages">3</div><div class="lbl">个村</div></div>
+                <div class="cell"><div class="num" id="statHouses">11</div><div class="lbl">套房源</div></div>
+                <div class="cell"><div class="num">2</div><div class="lbl">待跟进</div></div>
+              </div>
+              <div class="scroll">
+                <div id="villageList"></div>
+                <div class="empty hidden" id="villageEmpty">
+                  <div class="icon-bubble"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l8 5v11H4V8l8-5z"/></svg></div>
+                  <h3>还没有村</h3>
+                  <p>先添加你正在扫的城中村 / 老小区。</p>
+                  <button type="button" class="btn btn-primary" data-action="open-add-village">新增村</button>
+                </div>
+              </div>
+              <div class="fab-row">
+                <button type="button" class="fab" data-action="open-add-village" aria-label="新增村">+ 新增村</button>
+              </div>
+            </section>
+
+            <!-- 2 Village with buildings -->
+            <section class="screen" id="screen-village" data-tab="scan">
+              <header class="app-header compact">
+                <button type="button" class="icon-btn" data-go="scan" aria-label="返回">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>
+                </button>
+                <div style="flex:1">
+                  <h2 class="title-md" id="villageTitle">白石洲西区</h2>
+                  <p class="sub" id="villageSub">3 栋 · 6 套房源 · 今天更新</p>
+                </div>
+                <button type="button" class="icon-btn" data-action="open-add-building" aria-label="新增楼栋">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                </button>
+              </header>
+              <div class="scroll no-tab">
+                <div class="card">
+                  <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+                    <div>
+                      <div class="eyebrow">本村进度</div>
+                      <div style="font-weight:700;margin-top:2px">可继续扫楼栋</div>
+                    </div>
+                    <span class="chip ok">离线可记</span>
+                  </div>
+                </div>
+                <div class="section-title">楼栋</div>
+                <div id="buildingList"></div>
+                <div class="section-title">最近房源</div>
+                <div class="card" id="houseListRecent"></div>
+              </div>
+              <div class="bottom-cta dual">
+                <button type="button" class="btn btn-secondary" data-action="open-add-building">新增楼栋</button>
+                <button type="button" class="btn btn-primary" data-action="open-add-house">快速记一套</button>
+              </div>
+            </section>
+
+            <!-- 3 Building houses -->
+            <section class="screen" id="screen-building" data-tab="scan">
+              <header class="app-header compact">
+                <button type="button" class="icon-btn" data-go="village" aria-label="返回">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>
+                </button>
+                <div style="flex:1">
+                  <h2 class="title-md" id="buildingTitle">8 栋</h2>
+                  <p class="sub" id="buildingSub">白石洲西区 · 约 3 套</p>
+                </div>
+                <button type="button" class="icon-btn" data-action="open-add-house" aria-label="记房源">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                </button>
+              </header>
+              <div class="scroll no-tab">
+                <div class="card" id="buildingHouseList"></div>
+              </div>
+              <div class="bottom-cta">
+                <button type="button" class="btn btn-primary btn-block" data-action="open-add-house">在本栋快速记录</button>
+              </div>
+            </section>
+
+            <!-- 4 Quick record -->
+            <section class="screen" id="screen-record" data-tab="scan">
+              <header class="app-header compact">
+                <button type="button" class="icon-btn" data-go="village" aria-label="返回">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>
+                </button>
+                <div style="flex:1">
+                  <h2 class="title-md">快速记录</h2>
+                  <p class="sub">路边 3 步草稿 · 稍后可补全</p>
+                </div>
+                <button type="button" class="btn btn-ghost btn-danger-text" data-go="village">取消</button>
+              </header>
+              <div class="scroll no-tab">
+                <div class="card">
+                  <div class="field">
+                    <label for="rentInput">月租（元）</label>
+                    <input id="rentInput" class="control" type="number" inputmode="numeric" value="2800" />
+                  </div>
+                  <div class="field">
+                    <label>房型</label>
+                    <div class="seg" id="roomTypeSeg">
+                      <button type="button" data-val="一房">一房</button>
+                      <button type="button" class="on" data-val="两房">两房</button>
+                      <button type="button" data-val="三房">三房</button>
+                      <button type="button" data-val="单间">单间</button>
+                    </div>
+                  </div>
+                  <div class="field">
+                    <label>照片 <span class="hint">权限拒绝也可只写文字</span></label>
+                    <div class="photo-rail">
+                      <button type="button" class="photo-tile" id="addPhotoBtn">+ 拍照</button>
+                      <div class="photo-tile filled">客厅</div>
+                      <div class="photo-tile filled">厨卫</div>
+                    </div>
+                  </div>
+                  <div class="field" style="margin-bottom:0">
+                    <label for="noteInput">备注</label>
+                    <textarea id="noteInput" class="control">2楼无电梯，采光一般，押一付一</textarea>
+                  </div>
+                </div>
+                <p class="sub" style="margin:12px 4px 0">清单、联系人、评分可稍后补。保存仅写本地。</p>
+              </div>
+              <div class="bottom-cta dual">
+                <button type="button" class="btn btn-tonal" data-action="save-draft">存草稿</button>
+                <button type="button" class="btn btn-primary" data-action="save-and-open">保存并查看</button>
+              </div>
+            </section>
+
+            <!-- 5 Detail -->
+            <section class="screen" id="screen-detail" data-tab="houses">
+              <header class="app-header compact">
+                <button type="button" class="icon-btn" data-go="village" aria-label="返回">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>
+                </button>
+                <div style="flex:1">
+                  <h2 class="title-md" id="detailTitle">8 栋 502</h2>
+                  <p class="sub">白石洲西区 · 两房 · 约 48㎡</p>
+                </div>
+                <span class="chip shortlist">候选</span>
+              </header>
+              <div class="scroll no-tab">
+                <div class="card">
+                  <div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start">
+                    <div>
+                      <div class="eyebrow">决策摘要</div>
+                      <div style="font-size:22px;font-weight:800;font-variant-numeric:tabular-nums;margin-top:2px">¥3,160<span style="font-size:13px;font-weight:600;color:var(--text-2)"> /月估</span></div>
+                    </div>
+                    <span class="chip warn">硬筛待确认</span>
+                  </div>
+                  <div class="metrics">
+                    <div class="metric"><div class="v score">78</div><div class="k">综合分</div></div>
+                    <div class="metric"><div class="v commute">42′</div><div class="k">通勤估</div></div>
+                    <div class="metric"><div class="v risk">1</div><div class="k">风险项</div></div>
+                  </div>
+                </div>
+                <div class="section-title">快捷补全</div>
+                <div class="card" style="display:grid;gap:8px">
+                  <button type="button" class="btn btn-secondary btn-block" data-go="checklist">打开 Checklist</button>
+                  <button type="button" class="btn btn-tonal btn-block" data-go="score">查看评分详情</button>
+                </div>
+                <div class="section-title">硬筛未通过原因</div>
+                <div class="card">
+                  <div class="risk-item">
+                    <span class="dot blocker"></span>
+                    <div><strong>押金规则不清</strong><br /><span style="color:var(--text-2)">建议确认书面口径；仅为记录提示，非法务结论。</span></div>
+                  </div>
+                </div>
+                <div class="section-title">费用与房屋</div>
+                <div class="card">
+                  <div class="list-item"><div><div class="name">月租</div><div class="meta">押一付一</div></div><div class="price">¥2,800</div></div>
+                  <div class="list-item"><div><div class="name">管理费 / 网费</div><div class="meta">估入月总成本</div></div><div class="price">¥360</div></div>
+                  <div class="list-item"><div><div class="name">朝向 / 电梯</div><div class="meta">南 · 无电梯 · 2 楼</div></div><div class="chip ok">可做饭</div></div>
+                </div>
+              </div>
+              <div class="bottom-cta dual">
+                <button type="button" class="btn btn-secondary" data-go="record">编辑</button>
+                <button type="button" class="btn btn-primary" data-action="add-compare">加入对比</button>
+              </div>
+            </section>
+
+            <!-- 6 Houses tab -->
+            <section class="screen" id="screen-houses" data-tab="houses">
+              <header class="app-header">
+                <div>
+                  <div class="eyebrow">全局</div>
+                  <h2 class="title-lg">房源</h2>
+                  <p class="sub">跨村筛选与跟进</p>
+                </div>
+                <div class="icon-bubble" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 12h10M4 18h14"/></svg>
+                </div>
+              </header>
+              <div class="scroll">
+                <div class="filter-row" id="houseFilters">
+                  <button type="button" class="filter-chip on" data-filter="all">全部</button>
+                  <button type="button" class="filter-chip" data-filter="shortlisted">候选</button>
+                  <button type="button" class="filter-chip" data-filter="draft">草稿</button>
+                  <button type="button" class="filter-chip" data-filter="rejected">淘汰</button>
+                </div>
+                <div class="card" id="allHouseList"></div>
+              </div>
+            </section>
+
+            <!-- 7 Checklist -->
+            <section class="screen" id="screen-checklist" data-tab="houses">
+              <header class="app-header compact">
+                <button type="button" class="icon-btn" data-go="detail" aria-label="返回">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>
+                </button>
+                <div style="flex:1">
+                  <h2 class="title-md">Checklist</h2>
+                  <p class="sub">五模块 · 四态 · 风险联动</p>
+                </div>
+                <span class="chip ok" id="checkProgress">3/12</span>
+              </header>
+              <div class="scroll plain" id="checklistRoot"></div>
+            </section>
+
+            <!-- 8 Score detail -->
+            <section class="screen" id="screen-score" data-tab="houses">
+              <header class="app-header compact">
+                <button type="button" class="icon-btn" data-go="detail" aria-label="返回">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>
+                </button>
+                <div style="flex:1">
+                  <h2 class="title-md">评分详情</h2>
+                  <p class="sub">规则 mvp-2026-07 · 只读展示</p>
+                </div>
+              </header>
+              <div class="scroll plain">
+                <div class="card">
+                  <div class="score-ring-wrap">
+                    <div class="score-ring">
+                      <div class="inner">
+                        <div class="big">78</div>
+                        <div class="cap">/ 100</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="text-align:center;margin-top:4px">
+                    <span class="chip warn">硬筛未完全通过 · 仍可记录</span>
+                  </div>
+                  <div class="settings-row" style="margin-top:12px">
+                    <div>
+                      <div style="font-weight:700">关闭自动评分</div>
+                      <div class="sub">仅本页示意，不落库</div>
+                    </div>
+                    <button type="button" class="toggle" id="autoScoreToggle" aria-label="自动评分开关"></button>
+                  </div>
+                </div>
+                <div class="section-title">五维拆解</div>
+                <div class="card">
+                  <div class="bar-row"><div class="top"><span>成本 30%</span><span>22/30</span></div><div class="bar-track"><div class="bar-fill" style="width:73%"></div></div></div>
+                  <div class="bar-row"><div class="top"><span>通勤 20%</span><span>14/20</span></div><div class="bar-track"><div class="bar-fill blue" style="width:70%"></div></div></div>
+                  <div class="bar-row"><div class="top"><span>居住 25%</span><span>20/25</span></div><div class="bar-track"><div class="bar-fill mint" style="width:80%"></div></div></div>
+                  <div class="bar-row"><div class="top"><span>周边 15%</span><span>12/15</span></div><div class="bar-track"><div class="bar-fill purple" style="width:80%"></div></div></div>
+                  <div class="bar-row"><div class="top"><span>风险 10%</span><span>10/10</span></div><div class="bar-track"><div class="bar-fill warn" style="width:100%"></div></div></div>
+                </div>
+                <div class="section-title">扣分与缺失</div>
+                <div class="card">
+                  <div class="risk-item"><span class="dot"></span><div>水电单价缺失 → 成本维上限封顶（示意）</div></div>
+                  <div class="risk-item"><span class="dot blocker"></span><div>押金规则不清 → 硬筛提示，非法务结论</div></div>
+                </div>
+              </div>
+            </section>
+
+            <!-- 9 Compare -->
+            <section class="screen" id="screen-compare" data-tab="compare">
+              <header class="app-header">
+                <div>
+                  <div class="eyebrow">决策</div>
+                  <h2 class="title-lg">对比</h2>
+                  <p class="sub">并排关键字段 · 导出默认脱敏</p>
+                </div>
+                <div class="icon-bubble" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 5h6v14H5zM13 5h6v8h-6z"/></svg>
+                </div>
+              </header>
+              <div class="scroll">
+                <div class="card" style="margin-bottom:12px">
+                  <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+                    <div>
+                      <div style="font-weight:700">已选 2 套</div>
+                      <div class="sub">电话 / 微信 / 门牌导出时默认隐藏</div>
+                    </div>
+                    <span class="chip ok">脱敏开</span>
+                  </div>
+                </div>
+                <div class="table-wrap">
+                  <table class="compare-table">
+                    <thead>
+                      <tr><th>字段</th><th>8栋502</th><th>12栋301</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>月总成本</td><td class="best">3160</td><td>3480</td></tr>
+                      <tr><td>综合分</td><td>78</td><td class="best">84</td></tr>
+                      <tr><td>通勤估</td><td>42′</td><td class="best">35′</td></tr>
+                      <tr><td>房型面积</td><td>两房 48㎡</td><td>两房 52㎡</td></tr>
+                      <tr><td>风险</td><td>押金不清</td><td class="best">无 blocker</td></tr>
+                      <tr><td>门牌</td><td colspan="2" style="text-align:left;color:var(--text-2)">已脱敏 · ***</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="section-title">导出</div>
+                <div class="card">
+                  <div class="field">
+                    <label for="exportFmt">格式</label>
+                    <select id="exportFmt" class="control">
+                      <option>PDF（推荐）</option>
+                      <option>图片长图</option>
+                    </select>
+                  </div>
+                  <label style="display:flex;align-items:center;gap:10px;font-size:14px;min-height:44px">
+                    <input type="checkbox" checked id="maskToggle" />
+                    脱敏敏感字段（默认开启）
+                  </label>
+                  <button type="button" class="btn btn-primary btn-block" style="margin-top:8px" data-action="export-pdf">导出对比</button>
+                </div>
+              </div>
+            </section>
+
+            <!-- 10 Compare empty -->
+            <section class="screen" id="screen-compare-empty" data-tab="compare">
+              <header class="app-header">
+                <div>
+                  <div class="eyebrow">决策</div>
+                  <h2 class="title-lg">对比</h2>
+                  <p class="sub">还没有加入对比的房源</p>
+                </div>
+              </header>
+              <div class="scroll">
+                <div class="empty" style="margin-top:48px">
+                  <div class="icon-bubble">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 5h6v14H5zM13 5h6v8h-6z"/></svg>
+                  </div>
+                  <h3>先从详情加入对比</h3>
+                  <p>在房源详情点「加入对比」，最多并排比较多套房的关键决策字段。</p>
+                  <button type="button" class="btn btn-primary" data-go="houses">去房源列表</button>
+                </div>
+              </div>
+            </section>
+
+            <!-- 11 Settings -->
+            <section class="screen" id="screen-settings" data-tab="settings">
+              <header class="app-header">
+                <div>
+                  <div class="eyebrow">我的</div>
+                  <h2 class="title-lg">设置</h2>
+                  <p class="sub">偏好 · 隐私 · 主题</p>
+                </div>
+              </header>
+              <div class="scroll">
+                <div class="card">
+                  <button type="button" class="settings-row nav" data-go="preference">
+                    <div>
+                      <div style="font-weight:700">偏好设置</div>
+                      <div class="sub">预算 / 通勤 / 硬条件 / 权重</div>
+                    </div>
+                    <span class="chev" style="color:var(--text-2)">›</span>
+                  </button>
+                  <button type="button" class="settings-row nav" data-go="privacy">
+                    <div>
+                      <div style="font-weight:700">隐私说明</div>
+                      <div class="sub">本地优先 · 导出脱敏</div>
+                    </div>
+                    <span style="color:var(--text-2)">›</span>
+                  </button>
+                </div>
+                <div class="section-title">主题色板</div>
+                <div class="card">
+                  <div class="sub" style="margin-bottom:10px">只换画布与强调色，不改信息架构</div>
+                  <div class="swatch-row" id="swatches">
+                    <button type="button" class="swatch on" data-theme="strawberry" style="background:#FF5C92" aria-label="草莓奶油"></button>
+                    <button type="button" class="swatch" data-theme="grape" style="background:#7B60E9" aria-label="葡萄苏打"></button>
+                    <button type="button" class="swatch" data-theme="mint" style="background:#35AF8D" aria-label="薄荷云朵"></button>
+                    <button type="button" class="swatch" data-theme="lemon" style="background:#E2B23A" aria-label="奶油柠檬"></button>
+                  </div>
+                </div>
+                <div class="section-title">关于本原型</div>
+                <div class="card">
+                  <p class="sub" style="margin:0">静态 HTML 交互稿。真实应用：Flutter + Riverpod 2.x + go_router + Drift 本地优先。</p>
+                </div>
+              </div>
+            </section>
+
+            <!-- 12 Preference -->
+            <section class="screen" id="screen-preference" data-tab="settings">
+              <header class="app-header compact">
+                <button type="button" class="icon-btn" data-go="settings" aria-label="返回">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>
+                </button>
+                <div style="flex:1">
+                  <h2 class="title-md">偏好设置</h2>
+                  <p class="sub">硬筛与评分基准</p>
+                </div>
+              </header>
+              <div class="scroll no-tab">
+                <div class="card">
+                  <div class="field">
+                    <label for="maxTotal">月总成本上限（元）</label>
+                    <input id="maxTotal" class="control" type="number" value="4500" />
+                  </div>
+                  <div class="field">
+                    <label for="maxCommute">最大通勤（分钟）</label>
+                    <input id="maxCommute" class="control" type="number" value="45" />
+                  </div>
+                  <div class="field">
+                    <label for="dest">通勤目的地</label>
+                    <input id="dest" class="control" type="text" value="科技园地铁站" />
+                  </div>
+                  <div class="field" style="margin-bottom:0">
+                    <label>首选通勤方式</label>
+                    <div class="seg" id="commuteSeg">
+                      <button type="button" class="on" data-mode="transit">地铁</button>
+                      <button type="button" data-mode="walking">步行</button>
+                      <button type="button" data-mode="bicycling">骑行</button>
+                      <button type="button" data-mode="driving">驾车</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="section-title">硬性条件</div>
+                <div class="card">
+                  <div class="settings-row"><div><div style="font-weight:700">独卫</div><div class="sub">必须</div></div><button type="button" class="toggle on" data-hard="bath"></button></div>
+                  <div class="settings-row"><div><div style="font-weight:700">可做饭厨房</div><div class="sub">必须</div></div><button type="button" class="toggle on" data-hard="kitchen"></button></div>
+                  <div class="settings-row"><div><div style="font-weight:700">电梯</div><div class="sub">不限</div></div><button type="button" class="toggle" data-hard="elev"></button></div>
+                  <div class="settings-row"><div><div style="font-weight:700">可养宠</div><div class="sub">不限</div></div><button type="button" class="toggle" data-hard="pet"></button></div>
+                </div>
+                <div class="section-title">评分权重（合计宜 100%）</div>
+                <div class="card" id="weightCard">
+                  <div class="weight-row"><span>成本</span><input type="range" min="0" max="50" value="30" data-w="cost" /><strong data-wlabel="cost">30</strong></div>
+                  <div class="weight-row"><span>通勤</span><input type="range" min="0" max="50" value="20" data-w="commute" /><strong data-wlabel="commute">20</strong></div>
+                  <div class="weight-row"><span>居住</span><input type="range" min="0" max="50" value="25" data-w="living" /><strong data-wlabel="living">25</strong></div>
+                  <div class="weight-row"><span>周边</span><input type="range" min="0" max="50" value="15" data-w="nearby" /><strong data-wlabel="nearby">15</strong></div>
+                  <div class="weight-row"><span>风险</span><input type="range" min="0" max="50" value="10" data-w="risk" /><strong data-wlabel="risk">10</strong></div>
+                  <p class="sub" id="weightSum">合计 100% · 保存时仅提醒，不强制</p>
+                </div>
+              </div>
+              <div class="bottom-cta">
+                <button type="button" class="btn btn-primary btn-block" data-action="save-preference">保存偏好</button>
+              </div>
+            </section>
+
+            <!-- 13 Privacy -->
+            <section class="screen" id="screen-privacy" data-tab="settings">
+              <header class="app-header compact">
+                <button type="button" class="icon-btn" data-go="settings" aria-label="返回">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>
+                </button>
+                <div style="flex:1">
+                  <h2 class="title-md">隐私设置</h2>
+                  <p class="sub">只读说明 · 导出强制脱敏</p>
+                </div>
+              </header>
+              <div class="scroll plain">
+                <div class="section-title" style="margin-top:4px">数据存储</div>
+                <div class="card">
+                  <div class="info-tile"><div class="ico" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></div><div><div class="t">本地优先</div><div class="d">房源、照片、联系人默认只存本机，不上传云端。</div></div></div>
+                  <div class="info-tile"><div class="ico" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg></div><div><div class="t">敏感字段加密</div><div class="d">电话、微信、门牌以密文存储（AES-256-GCM 示意）。</div></div></div>
+                </div>
+                <div class="section-title">导出脱敏（默认开启）</div>
+                <div class="card">
+                  <div class="info-tile"><div class="ico" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 8h12v11H6z"/><path d="M9 8V6a3 3 0 016 0v2"/></svg></div><div><div class="t">隐藏联系人</div><div class="d">导出时默认隐藏姓名、电话、微信。</div></div></div>
+                  <div class="info-tile"><div class="ico" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V9l8-5 8 5v11"/><path d="M9 20v-6h6v6"/></svg></div><div><div class="t">隐藏门牌</div><div class="d">导出时默认隐藏精确门牌号。</div></div></div>
+                  <div class="info-tile"><div class="ico" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"/><circle cx="12" cy="12" r="2.5"/></svg></div><div><div class="t">隐藏详细地址</div><div class="d">导出时默认隐藏详细地址与照片元数据。</div></div></div>
+                  <div class="info-tile"><div class="ico" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 3h7l3 3v15H7z"/><path d="M14 3v4h4"/></svg></div><div><div class="t">合同照片</div><div class="d">导出默认不包含合同照片。</div></div></div>
+                </div>
+                <p class="sub" style="margin:12px 4px">以上脱敏项在导出时强制执行。风险提示仅为建议，不构成法律结论。</p>
+              </div>
+            </section>
+
+            <nav class="tabbar" id="tabbar" aria-label="主导航">
+              <button type="button" class="active" data-tab-go="scan">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V9l8-5 8 5v11"/><path d="M9 20v-6h6v6"/></svg>
+                扫楼
+              </button>
+              <button type="button" data-tab-go="houses">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 12h10M4 18h14"/></svg>
+                房源
+              </button>
+              <button type="button" data-tab-go="compare">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 5h6v14H5zM13 5h6v8h-6z"/></svg>
+                对比
+              </button>
+              <button type="button" data-tab-go="settings">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2"/></svg>
+                设置
+              </button>
+            </nav>
+
+            <div class="overlay" id="overlay" aria-hidden="true">
+              <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+                <div class="sheet-handle"></div>
+                <div id="sheetBody"></div>
+              </div>
+            </div>
+
+            <div class="toast" id="toast" role="status"></div>
+          </div>
+        </div>
+      </div>
+      <div class="device-caption">390×844 · 4 Tab + 二级页 · 草莓奶油默认</div>
+    </div>
+  </div>
+
+  <script>
+    const state = {
+      screen: "scan",
+      villages: [
+        { id: "v1", name: "白石洲西区", buildings: 3, houses: 6, updated: "今天 14:20" },
+        { id: "v2", name: "水围新村", buildings: 2, houses: 4, updated: "昨天" },
+        { id: "v3", name: "大冲城市花园", buildings: 1, houses: 1, updated: "周一" },
+      ],
+      buildings: [
+        { id: "b1", name: "8 栋", houses: 3, note: "靠主干道 · 无电梯" },
+        { id: "b2", name: "12 栋", houses: 2, note: "有电梯 · 中介多" },
+        { id: "b3", name: "3 栋", houses: 1, note: "较新 · 待扫" },
+      ],
+      houses: [
+        { id: "h1", title: "8 栋 502", village: "白石洲西区", meta: "两房 · 2楼无电梯", price: 2800, score: 78, status: "shortlisted", buildingId: "b1" },
+        { id: "h2", title: "12 栋 301", village: "白石洲西区", meta: "两房 · 有电梯", price: 3100, score: 84, status: "active", buildingId: "b2" },
+        { id: "h3", title: "3 栋 1802", village: "白石洲西区", meta: "一房 · 未补清单", price: 2200, score: null, status: "draft", buildingId: "b3" },
+        { id: "h4", title: "水围 A2-601", village: "水围新村", meta: "两房 · 候选", price: 3000, score: 81, status: "shortlisted", buildingId: "" },
+        { id: "h5", title: "旧录 9 栋", village: "大冲城市花园", meta: "超预算淘汰", price: 5200, score: 55, status: "rejected", buildingId: "" },
+      ],
+      roomType: "两房",
+      houseFilter: "all",
+      checklist: {},
+      currentBuildingId: "b1",
+    };
+
+    const checklistTemplate = [
+      {
+        module: "room", title: "房间",
+        items: [
+          { key: "light", label: "采光" },
+          { key: "noise", label: "噪音" },
+          { key: "damp", label: "潮湿/异味" },
+        ],
+      },
+      {
+        module: "kitchen", title: "厨卫",
+        items: [
+          { key: "kitchen_ok", label: "可做饭" },
+          { key: "bath_private", label: "独卫" },
+          { key: "water_press", label: "水压" },
+        ],
+      },
+      {
+        module: "building", title: "楼栋",
+        items: [
+          { key: "elevator", label: "电梯" },
+          { key: "corridor", label: "楼道安全" },
+        ],
+      },
+      {
+        module: "contract", title: "合同",
+        items: [
+          { key: "deposit", label: "押金口径清楚" },
+          { key: "id_check", label: "对方身份可核验" },
+        ],
+      },
+      {
+        module: "risk", title: "风险", risk: true,
+        items: [
+          { key: "non_live", label: "非居住空间" },
+          { key: "fire", label: "消防/楼栋异常" },
+        ],
+      },
+    ];
+
+    const themes = {
+      strawberry: {
+        "--bg": "#FFFAF7", "--bg-blush": "#FFF1F6", "--surface-soft": "#FFF7FA",
+        "--primary": "#FF5C92", "--primary-dark": "#E9477D", "--secondary": "#8B6CFF",
+      },
+      grape: {
+        "--bg": "#FDFCFF", "--bg-blush": "#F1ECFF", "--surface-soft": "#F8F5FF",
+        "--primary": "#7B60E9", "--primary-dark": "#6249C6", "--secondary": "#FF75A8",
+      },
+      mint: {
+        "--bg": "#F9FFFC", "--bg-blush": "#EAF9F2", "--surface-soft": "#F1FCF7",
+        "--primary": "#35AF8D", "--primary-dark": "#278D70", "--secondary": "#6E7CF4",
+      },
+      lemon: {
+        "--bg": "#FFFEF8", "--bg-blush": "#FFF7E3", "--surface-soft": "#FFF9E8",
+        "--primary": "#E2B23A", "--primary-dark": "#C9951C", "--secondary": "#7B60E9",
+      },
+    };
+
+    const TAB_SCREENS = new Set(["scan", "houses", "compare", "compare-empty", "settings"]);
+    const $ = (sel, root = document) => root.querySelector(sel);
+    const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
+
+    function toast(msg, higher = false) {
+      const el = $("#toast");
+      el.textContent = msg;
+      el.classList.toggle("higher", higher);
+      el.classList.add("show");
+      clearTimeout(toast._t);
+      toast._t = setTimeout(() => el.classList.remove("show"), 2400);
+    }
+
+    function escapeHtml(s) {
+      return String(s)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;");
+    }
+
+    function statusChip(status) {
+      if (status === "shortlisted") return '<span class="chip shortlist">候选</span>';
+      if (status === "draft") return '<span class="chip draft">草稿</span>';
+      if (status === "rejected") return '<span class="chip risk">淘汰</span>';
+      if (status === "chosen") return '<span class="chip chosen">已定</span>';
+      return '<span class="chip">跟进</span>';
+    }
+
+    function renderVillages() {
+      const list = $("#villageList");
+      const empty = $("#villageEmpty");
+      $("#statVillages").textContent = String(state.villages.length);
+      $("#statHouses").textContent = String(state.villages.reduce((s, v) => s + v.houses, 0));
+      if (!state.villages.length) {
+        list.innerHTML = "";
+        empty.classList.remove("hidden");
+        return;
+      }
+      empty.classList.add("hidden");
+      list.innerHTML = state.villages.map((v) => `
+        <button type="button" class="card pressable" data-open-village="${v.id}" style="margin-bottom:10px">
+          <div class="village-row">
+            <div class="icon-bubble">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V9l8-5 8 5v11"/><path d="M9 20v-6h6v6"/></svg>
+            </div>
+            <div>
+              <div class="title-md" style="font-size:16px">${escapeHtml(v.name)}</div>
+              <div class="meta">
+                <span class="stat-pill">${v.buildings} 栋</span>
+                <span class="stat-pill">${v.houses} 套</span>
+                <span>${escapeHtml(v.updated)}</span>
+              </div>
+            </div>
+            <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+          </div>
+        </button>
+      `).join("");
+    }
+
+    function renderBuildings() {
+      $("#buildingList").innerHTML = state.buildings.map((b) => `
+        <button type="button" class="card pressable building-card" data-open-building="${b.id}" style="margin-bottom:10px">
+          <div class="row">
+            <div>
+              <div style="font-weight:700;font-size:16px">${escapeHtml(b.name)}</div>
+              <div class="sub">${escapeHtml(b.note)} · ${b.houses} 套</div>
+            </div>
+            <span style="color:var(--text-2)">›</span>
+          </div>
+        </button>
+      `).join("");
+    }
+
+    function houseRowHtml(h, extra = "") {
+      return `
+        <button type="button" class="list-item" data-open-house="${h.id}" style="width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--divider);padding:12px 0">
+          <div>
+            <div class="name">${escapeHtml(h.title)}</div>
+            <div class="meta">${escapeHtml(h.village)} · ${escapeHtml(h.meta)}${h.score != null ? " · 分 " + h.score : ""}${extra}</div>
+          </div>
+          <div style="text-align:right">
+            <div class="price">¥${Number(h.price).toLocaleString("zh-CN")}</div>
+            <div style="margin-top:4px">${statusChip(h.status)}</div>
+          </div>
+        </button>
+      `;
+    }
+
+    function renderRecentHouses() {
+      $("#houseListRecent").innerHTML = state.houses
+        .filter((h) => h.village === "白石洲西区" || h.buildingId)
+        .slice(0, 3)
+        .map((h) => houseRowHtml(h))
+        .join("");
+    }
+
+    function renderBuildingHouses() {
+      const b = state.buildings.find((x) => x.id === state.currentBuildingId);
+      const houses = state.houses.filter((h) => h.buildingId === state.currentBuildingId);
+      if (b) {
+        $("#buildingTitle").textContent = b.name;
+        $("#buildingSub").textContent = `白石洲西区 · ${houses.length || b.houses} 套`;
+      }
+      $("#buildingHouseList").innerHTML = houses.length
+        ? houses.map((h) => houseRowHtml(h)).join("")
+        : `<div class="sub" style="padding:8px 0">本栋还没有房源，点下方快速记录。</div>`;
+    }
+
+    function renderAllHouses() {
+      const f = state.houseFilter;
+      const list = state.houses.filter((h) => f === "all" ? true : h.status === f);
+      $("#allHouseList").innerHTML = list.length
+        ? list.map((h) => houseRowHtml(h)).join("")
+        : `<div class="sub" style="padding:8px 0">该筛选下暂无房源。</div>`;
+    }
+
+    function renderChecklist() {
+      const root = $("#checklistRoot");
+      let answered = 0;
+      let total = 0;
+      root.innerHTML = checklistTemplate.map((mod) => {
+        const vals = mod.items.map((it) => state.checklist[it.key]).filter(Boolean);
+        answered += vals.length;
+        total += mod.items.length;
+        const pct = Math.round((vals.length / mod.items.length) * 100);
+        const labels = mod.risk
+          ? [["hit", "命中", "on-bad"], ["not_hit", "未命中", "on-good"], ["not_seen", "未看", "on-ns"]]
+          : [["good", "好", "on-good"], ["ok", "一般", "on-ok"], ["bad", "差", "on-bad"], ["not_seen", "未看", "on-ns"]];
+        return `
+          <div class="card" style="margin-bottom:10px">
+            <div class="module-head">
+              <strong>${escapeHtml(mod.title)}</strong>
+              <span class="chip">${vals.length}/${mod.items.length}</span>
+            </div>
+            <div class="progress-mini"><i style="width:${pct}%"></i></div>
+            ${mod.items.map((it) => {
+              const cur = state.checklist[it.key];
+              return `
+                <div class="check-item">
+                  <div class="label">${escapeHtml(it.label)}</div>
+                  <div class="check-seg" data-check-key="${it.key}">
+                    ${labels.map(([v, lab, cls]) => `
+                      <button type="button" data-check-val="${v}" class="${cur === v ? cls : ""}">${lab}</button>
+                    `).join("")}
+                  </div>
+                </div>
+              `;
+            }).join("")}
+          </div>
+        `;
+      }).join("");
+      $("#checkProgress").textContent = `${answered}/${total}`;
+    }
+
+    function updateWeightSum() {
+      const sum = $$("#weightCard input[type=range]").reduce((s, el) => s + Number(el.value), 0);
+      const el = $("#weightSum");
+      el.textContent = `合计 ${sum}% · 保存时仅提醒，不强制`;
+      el.style.color = sum === 100 ? "var(--text-2)" : "var(--warning)";
+    }
+
+    function showScreen(name) {
+      state.screen = name;
+      $$(".screen").forEach((el) => el.classList.toggle("active", el.id === "screen-" + name));
+      $$("#sideNavMain button, #sideNavSub button").forEach((btn) => {
+        btn.classList.toggle("active", btn.dataset.go === name);
+      });
+      const screen = $("#screen-" + name);
+      const tab = screen?.dataset.tab || name;
+      const tabKey = tab === "compare-empty" ? "compare" : tab;
+      $$("#tabbar button").forEach((btn) => btn.classList.toggle("active", btn.dataset.tabGo === tabKey));
+      const needsTab = TAB_SCREENS.has(name);
+      $("#tabbar").style.display = needsTab ? "grid" : "none";
+      closeSheet(false);
+      if (name === "checklist") renderChecklist();
+      if (name === "building") renderBuildingHouses();
+      if (name === "houses") renderAllHouses();
+      if (name === "preference") updateWeightSum();
+    }
+
+    function openSheet(mode) {
+      const body = $("#sheetBody");
+      if (mode === "village") {
+        body.innerHTML = `
+          <h3 id="sheetTitle">新增村</h3>
+          <p class="desc">字段尽量少：村名必填，备注可选。</p>
+          <div class="field"><label for="newVillageName">村 / 小区名</label><input id="newVillageName" class="control" type="text" placeholder="例如 水围新村" /></div>
+          <div class="field"><label for="newVillageNote">备注 <span class="hint">可选</span></label><input id="newVillageNote" class="control" type="text" placeholder="地铁口…" /></div>
+          <div style="display:grid;grid-template-columns:1fr 1.3fr;gap:8px;margin-top:8px">
+            <button type="button" class="btn btn-secondary" data-action="close-sheet">取消</button>
+            <button type="button" class="btn btn-primary" data-action="confirm-add-village">创建</button>
+          </div>
+        `;
+      } else {
+        body.innerHTML = `
+          <h3 id="sheetTitle">新增楼栋</h3>
+          <p class="desc">本村下新建楼栋，再录房源。</p>
+          <div class="field"><label for="newBuildingName">楼栋名</label><input id="newBuildingName" class="control" type="text" placeholder="例如 15 栋" /></div>
+          <div class="field"><label for="newBuildingNote">备注 <span class="hint">可选</span></label><input id="newBuildingNote" class="control" type="text" placeholder="电梯/朝向…" /></div>
+          <div style="display:grid;grid-template-columns:1fr 1.3fr;gap:8px;margin-top:8px">
+            <button type="button" class="btn btn-secondary" data-action="close-sheet">取消</button>
+            <button type="button" class="btn btn-primary" data-action="confirm-add-building">创建</button>
+          </div>
+        `;
+      }
+      $("#overlay").classList.add("show");
+      $("#overlay").setAttribute("aria-hidden", "false");
+    }
+
+    function closeSheet() {
+      $("#overlay").classList.remove("show");
+      $("#overlay").setAttribute("aria-hidden", "true");
+    }
+
+    function applyTheme(key) {
+      const t = themes[key];
+      if (!t) return;
+      const root = $("#deviceScreen");
+      Object.entries(t).forEach(([k, v]) => root.style.setProperty(k, v));
+      $$("#swatches .swatch").forEach((s) => s.classList.toggle("on", s.dataset.theme === key));
+    }
+
+    document.addEventListener("click", (e) => {
+      const t = e.target.closest(
+        "[data-go],[data-tab-go],[data-action],[data-open-village],[data-open-house],[data-open-building],[data-theme],[data-val],[data-mode],[data-filter],[data-check-val],[data-hard],#autoScoreToggle"
+      );
+      if (!t) {
+        if (e.target.id === "overlay") closeSheet();
+        return;
+      }
+
+      if (t.id === "autoScoreToggle") {
+        t.classList.toggle("on");
+        toast(t.classList.contains("on") ? "已开启自动评分（示意）" : "已关闭自动评分（示意）", true);
+        return;
+      }
+      if (t.dataset.hard != null) {
+        t.classList.toggle("on");
+        return;
+      }
+      if (t.dataset.go) { showScreen(t.dataset.go); return; }
+      if (t.dataset.tabGo) {
+        const map = { scan: "scan", houses: "houses", compare: "compare", settings: "settings" };
+        showScreen(map[t.dataset.tabGo] || t.dataset.tabGo);
+        return;
+      }
+      if (t.dataset.openVillage) {
+        const v = state.villages.find((x) => x.id === t.dataset.openVillage);
+        if (v) {
+          $("#villageTitle").textContent = v.name;
+          $("#villageSub").textContent = `${v.buildings} 栋 · ${v.houses} 套房源 · ${v.updated}`;
+        }
+        showScreen("village");
+        return;
+      }
+      if (t.dataset.openBuilding) {
+        state.currentBuildingId = t.dataset.openBuilding;
+        showScreen("building");
+        return;
+      }
+      if (t.dataset.openHouse) {
+        const h = state.houses.find((x) => x.id === t.dataset.openHouse);
+        if (h) $("#detailTitle").textContent = h.title;
+        showScreen("detail");
+        return;
+      }
+      if (t.dataset.theme) {
+        applyTheme(t.dataset.theme);
+        toast("已切换主题（仅预览）", true);
+        return;
+      }
+      if (t.dataset.val && t.closest("#roomTypeSeg")) {
+        state.roomType = t.dataset.val;
+        $$("#roomTypeSeg button").forEach((b) => b.classList.toggle("on", b === t));
+        return;
+      }
+      if (t.dataset.mode && t.closest("#commuteSeg")) {
+        $$("#commuteSeg button").forEach((b) => b.classList.toggle("on", b === t));
+        return;
+      }
+      if (t.dataset.filter) {
+        state.houseFilter = t.dataset.filter;
+        $$("#houseFilters .filter-chip").forEach((b) => b.classList.toggle("on", b === t));
+        renderAllHouses();
+        return;
+      }
+      if (t.dataset.checkVal) {
+        const key = t.closest("[data-check-key]")?.dataset.checkKey;
+        if (!key) return;
+        if (state.checklist[key] === t.dataset.checkVal) delete state.checklist[key];
+        else state.checklist[key] = t.dataset.checkVal;
+        renderChecklist();
+        return;
+      }
+
+      switch (t.dataset.action) {
+        case "open-add-village":
+          showScreen("scan");
+          openSheet("village");
+          break;
+        case "open-add-building":
+          openSheet("building");
+          break;
+        case "close-sheet":
+          closeSheet();
+          break;
+        case "confirm-add-village": {
+          const name = $("#newVillageName")?.value.trim();
+          if (!name) { toast("请填写村 / 小区名", true); return; }
+          state.villages.unshift({ id: "v" + Date.now(), name, buildings: 0, houses: 0, updated: "刚刚" });
+          renderVillages();
+          closeSheet();
+          toast("已新增「" + name + "」");
+          break;
+        }
+        case "confirm-add-building": {
+          const name = $("#newBuildingName")?.value.trim();
+          if (!name) { toast("请填写楼栋名", true); return; }
+          const note = $("#newBuildingNote")?.value.trim() || "新建";
+          state.buildings.unshift({ id: "b" + Date.now(), name, houses: 0, note });
+          if (state.villages[0]) state.villages[0].buildings += 1;
+          renderBuildings();
+          renderVillages();
+          closeSheet();
+          toast("已新增楼栋「" + name + "」");
+          break;
+        }
+        case "open-add-house":
+          showScreen("record");
+          break;
+        case "save-draft":
+          toast("已保存本地草稿", true);
+          break;
+        case "save-and-open": {
+          const rent = Number($("#rentInput").value || 0);
+          const h = {
+            id: "h" + Date.now(),
+            title: "新草稿 · " + state.roomType,
+            village: "白石洲西区",
+            meta: state.roomType + " · 刚刚保存",
+            price: rent || 0,
+            score: null,
+            status: "draft",
+            buildingId: state.currentBuildingId,
+          };
+          state.houses.unshift(h);
+          const b = state.buildings.find((x) => x.id === state.currentBuildingId);
+          if (b) b.houses += 1;
+          if (state.villages[0]) state.villages[0].houses += 1;
+          renderAll();
+          $("#detailTitle").textContent = h.title;
+          showScreen("detail");
+          toast("已保存到本地");
+          break;
+        }
+        case "add-compare":
+          showScreen("compare");
+          toast("已加入对比（示意）");
+          break;
+        case "export-pdf": {
+          const mask = $("#maskToggle")?.checked;
+          toast(mask ? "已生成脱敏 PDF（示意）" : "已导出（含敏感字段，不推荐）");
+          break;
+        }
+        case "save-preference": {
+          const sum = $$("#weightCard input[type=range]").reduce((s, el) => s + Number(el.value), 0);
+          toast(sum === 100 ? "偏好已保存（示意）" : `权重合计 ${sum}% · 已保存并提醒`, true);
+          showScreen("settings");
+          break;
+        }
+        default:
+          break;
+      }
+    });
+
+    document.addEventListener("input", (e) => {
+      if (e.target.matches("#weightCard input[type=range]")) {
+        const key = e.target.dataset.w;
+        const label = document.querySelector(`[data-wlabel="${key}"]`);
+        if (label) label.textContent = e.target.value;
+        updateWeightSum();
+      }
+    });
+
+    $("#addPhotoBtn")?.addEventListener("click", () => {
+      toast("原型中模拟拍照成功", true);
+      const rail = $(".photo-rail");
+      const tile = document.createElement("div");
+      tile.className = "photo-tile filled";
+      tile.textContent = "新拍";
+      rail.appendChild(tile);
+    });
+
+    // Seed checklist
+    state.checklist = { light: "ok", kitchen_ok: "good", deposit: "bad" };
+
+    function renderAll() {
+      renderVillages();
+      renderBuildings();
+      renderRecentHouses();
+      renderBuildingHouses();
+      renderAllHouses();
+      renderChecklist();
+    }
+
+    renderAll();
+    showScreen("scan");
+  </script>
+</body>
+</html>

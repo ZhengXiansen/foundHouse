@@ -1,0 +1,12 @@
+{
+  "id": "fix-swipe-delete-height-right-only",
+  "title": "修复滑动删除按钮高度分离并限制为仅右滑",
+  "status": "completed",
+  "complexity": "M",
+  "risk": "medium",
+  "domain": "mobile-ui",
+  "currentPhase": "completed",
+  "nextAction": "已完成右滑限定、高度对齐、真机验证和 release 安装，待归档",
+  "createdAt": "2026-07-07T21:33:55Z",
+  "branch": "unknown"
+}

@@ -1,0 +1,111 @@
+{
+  "meta": {
+    "version": "mvp-2026-07-02",
+    "description": "风险项文案 + 扣分解释文案 + 无网/失败/权限拒绝状态文案。对应 UI §8 错误文案边界、PRD 可解释性、技术方案 6.x 解释口径。",
+    "principles": [
+      "只提示风险，不做法律结论：可说『押金规则未记录，建议补问并写入合同』，不说『这个合同违法』或『这个房东有问题』。",
+      "风险提示用建议句式，说明依据，不制造恐慌。",
+      "错误文案必须可操作，例如『地图暂不可用，可先保存，稍后补通勤』。"
+    ]
+  },
+
+  "risk_flags": {
+    "risk_second_landlord": {
+      "label": "疑似二房东",
+      "severity": "warning",
+      "hint": "对方可能是二房东，建议确认与产权人的转租授权，并要求写入合同。"
+    },
+    "risk_non_residential": {
+      "label": "非居住空间用于居住",
+      "severity": "blocker",
+      "hint": "该空间可能非居住用途，居住存在合规与安全隐患，建议放弃或核实用途证明。"
+    },
+    "risk_refuse_identity": {
+      "label": "拒绝出示身份/授权",
+      "severity": "blocker",
+      "hint": "对方拒绝说明房东或授权身份，无法核实出租资格，建议谨慎。"
+    },
+    "risk_deposit_unclear": {
+      "label": "押金退还规则不清",
+      "severity": "blocker",
+      "hint": "押金退还规则完全不清，建议补问扣减依据并写入合同后再决定。"
+    },
+    "risk_fire_safety": {
+      "label": "消防/楼栋安全异常",
+      "severity": "blocker",
+      "hint": "消防通道堵塞或楼栋安全明显异常，建议优先排除。"
+    },
+    "risk_fee_conflict": {
+      "label": "费用口径矛盾",
+      "severity": "blocker",
+      "hint": "费用口径前后矛盾且无法写入合同，实际支出可能高于报价，建议书面确认。"
+    },
+    "risk_low_price_push": {
+      "label": "低价催签",
+      "severity": "warning",
+      "hint": "对方以低价催促签约，建议冷静核对费用与合同条款后再定。"
+    },
+    "risk_verbal_promise": {
+      "label": "口头承诺不写合同",
+      "severity": "warning",
+      "hint": "关键承诺仅口头未入合同，建议要求写入书面合同。"
+    },
+    "risk_partition_room": {
+      "label": "群租/隔断",
+      "severity": "warning",
+      "hint": "疑似群租或隔断，居住体验与合规存在风险，建议确认。"
+    }
+  },
+
+  "score_explanation": {
+    "cost_score": {
+      "near_budget": "月总成本接近你的预算上限，成本得分偏低。",
+      "missing_fee_capped": "水电等费用未记录，成本维度最高只能拿 70 分，建议补录真实费用后重算。",
+      "estimated_note": "含缺失费用的保守估算，实际以补录为准。"
+    },
+    "commute_score": {
+      "source": "通勤来自高德路线（{mode}），耗时 {minutes} 分钟，步行 {walking}m。",
+      "over_limit": "通勤超过你设置的最大通勤时间，已进入硬筛淘汰。",
+      "transfer_penalty": "换乘 {count} 次，通勤得分有扣减。"
+    },
+    "living_score": {
+      "generic": "综合采光、通风、噪音、潮湿、厨卫、设备、楼层与电梯得出。"
+    },
+    "nearby_score": {
+      "source": "周边 POI 来自高德，300m/800m 内交通与生活配套加分。",
+      "user_correction": "你已修正：{note}"
+    },
+    "risk_score": {
+      "warning_deduction": "命中 {count} 项警告风险，风险维度有扣减。",
+      "blocker_reject": "命中红线风险，已淘汰，避免高分掩盖风险。"
+    }
+  },
+
+  "missing_info": {
+    "missing_utility_fee": "未记录水电费，建议补问单价。",
+    "missing_deposit_rule": "未记录押金退还规则，建议补问并写入合同。",
+    "missing_contact_identity": "未核验联系人身份，建议确认是否房东本人或有授权。",
+    "missing_meter_photo": "未拍摄电表/水表，建议补拍留证。"
+  },
+
+  "status_messages": {
+    "offline": "离线记录中，地图和通勤稍后补全。",
+    "map_api_failed": "地图暂不可用，可先保存，稍后补通勤。",
+    "map_retry": "重试获取地图与通勤",
+    "location_denied": "未获得定位权限，可手动输入地址。",
+    "location_reauth": "再次授权定位",
+    "camera_denied": "未获得相机权限，可先用文字记录。",
+    "open_settings": "打开设置",
+    "photo_save_failed": "照片保存失败，点击重试。",
+    "storage_full": "本机存储不足，请清理或导出备份后再拍照。",
+    "saved_at": "已保存 {time}",
+    "draft_autosaved": "草稿已自动保存",
+    "hard_filter_applied": "硬条件已用于筛选"
+  },
+
+  "export_privacy": {
+    "sensitive_notice": "导出内容可能包含以下敏感项：{items}，默认已隐藏。",
+    "hidden_summary": "已隐藏联系人、门牌、经纬度",
+    "delete_confirm": "删除该房源将同时删除关联照片和本地敏感数据，确认删除？"
+  }
+}

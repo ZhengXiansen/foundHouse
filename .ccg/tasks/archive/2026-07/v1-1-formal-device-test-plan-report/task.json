@@ -1,0 +1,12 @@
+{
+  "id": "v1-1-formal-device-test-plan-report",
+  "title": "制定 v1.1 正式版测试用例并执行完整真机测试报告",
+  "status": "completed",
+  "complexity": "L+",
+  "risk": "medium",
+  "domain": "flutter-app",
+  "currentPhase": "completed",
+  "nextAction": "归档任务；根目录非 Git repo，跳过归档 commit",
+  "createdAt": "2026-07-06T19:06:08Z",
+  "branch": "main"
+}

@@ -1,0 +1,88 @@
+{
+  "score_rule_version": "mvp-2026-07-02",
+  "description": "租房扫楼 MVP 评分规则 v0。客户端内置默认规则，BFF 可下发覆盖（F8）。所有分项 clamp[0,100]（F3）。",
+  "weights": {
+    "cost": 0.30,
+    "commute": 0.20,
+    "living": 0.25,
+    "nearby": 0.15,
+    "risk": 0.10
+  },
+  "dimension_mapping": {
+    "cost": ["总成本"],
+    "commute": ["通勤"],
+    "living": ["房屋质量", "居住舒适"],
+    "nearby": ["周边便利"],
+    "risk": ["安全风险", "交易风险"]
+  },
+  "missing_fee": {
+    "default_water_monthly": 60,
+    "default_electricity_monthly": 150,
+    "note": "缺水电单价时按此保守估值补偿计入 estimated_total_monthly，避免低估成本（F2）。片区默认值可由远程配置覆盖，无远程配置用此内置兜底。",
+    "cost_score_cap_when_missing": 70
+  },
+  "cost_score": {
+    "formula": "clamp(100 - (estimated_total_monthly / max_rent_total) * 40, 0, 100)",
+    "cap_if_missing_fee": 70,
+    "note": "has_missing_fee 为 true 时对结果再取 min(raw, 70)。补偿估值用于不低估，封顶用于惩罚缺失，不重复计罚（F2）。"
+  },
+  "commute_score": {
+    "formula": "clamp(100 - (commute_minutes / max_commute_minutes) * 50 - transfer_count * 5, 0, 100)",
+    "primary_mode_default": "transit",
+    "fallback_mode": "driving",
+    "note": "主要通勤时间默认取 transit；用户偏好 preferred_commute_mode 优先；无 transit 结果回退 driving（F5）。"
+  },
+  "living_score": {
+    "components": ["采光", "通风", "噪音", "潮湿", "厨卫", "设备", "楼层", "电梯"],
+    "checklist_value_score": { "good": 100, "ok": 70, "bad": 30, "not_seen": null },
+    "note": "由 checklist 相关项均值计算；not_seen 不计入分母，但计入缺失提醒。"
+  },
+  "nearby_score": {
+    "note": "300m/800m 内交通、买菜、便利店、药店、餐饮加分；用户主观修正（user_correction）优先于系统 POI 统计。",
+    "radii": [300, 800, 1500]
+  },
+  "risk_score": {
+    "formula": "clamp(100 - warning_count * 12 - missing_critical_count * 8, 0, 100)",
+    "note": "必须 clamp 下限 0（F3）。missing_critical_count 仅统计非费用类关键缺失，费用类缺失已在 cost_score 封顶惩罚，不重复计罚。"
+  },
+  "hard_filter": {
+    "note": "硬筛优先于评分，命中即 rejected/flagged 并展示原因（F1）。",
+    "rules": [
+      { "id": "over_budget", "desc": "estimated_total_monthly（含缺失补偿）> max_rent_total", "basis": "月总成本，非月租（F1）" },
+      { "id": "over_commute", "desc": "主要通勤时间 > max_commute_minutes", "basis": "transit 主口径（F5）" },
+      { "id": "missing_required_feature", "desc": "缺少必选硬性条件（如必须独卫但无独卫）" },
+      { "id": "hit_blocker_risk", "desc": "命中任一 blocker 风险" }
+    ]
+  },
+  "risk_flags": {
+    "blocker": [
+      { "key": "risk_non_residential", "label": "非居住空间用于居住" },
+      { "key": "risk_refuse_identity", "label": "拒绝说明房东/授权身份" },
+      { "key": "risk_deposit_unclear", "label": "押金退还规则完全不清" },
+      { "key": "risk_fire_safety", "label": "消防通道严重堵塞或楼栋安全明显异常" },
+      { "key": "risk_fee_contradiction", "label": "费用口径前后矛盾且无法写入合同" }
+    ],
+    "warning": [
+      { "key": "risk_second_landlord", "label": "二房东" },
+      { "key": "risk_identity_unverified", "label": "身份未核验" },
+      { "key": "risk_no_contract", "label": "拒绝写合同/仅口头承诺" },
+      { "key": "risk_fee_ambiguous", "label": "费用口径模糊" },
+      { "key": "risk_group_rent", "label": "群租隔断" },
+      { "key": "risk_low_price_rush", "label": "低价催签" }
+    ]
+  },
+  "missing_critical_keys": [
+    { "key": "deposit_rule", "label": "押金退还规则未记录" },
+    { "key": "contact_identity", "label": "联系人身份未核验" },
+    { "key": "payment_cycle", "label": "押付方式未记录" }
+  ],
+  "explanation_templates": {
+    "over_budget": "月总成本 {value} 元超预算上限 {limit} 元{missing_note}",
+    "over_budget_missing_note": "（含缺失费用的保守估算，补录真实费用后可重算）",
+    "over_commute": "主要通勤 {value} 分钟超上限 {limit} 分钟（来自高德{mode}路线）",
+    "cost_capped": "费用信息不完整，成本维度最高 70 分，建议补问水电单价",
+    "commute_source": "通勤来自高德路线，步行 {walking_meters}m，换乘 {transfer_count} 次",
+    "risk_blocker": "命中红线风险：{label}，已淘汰，高分不能抵消",
+    "user_correction": "你已修正：{note}"
+  }
+}

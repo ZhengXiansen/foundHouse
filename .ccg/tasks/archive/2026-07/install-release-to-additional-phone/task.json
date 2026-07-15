@@ -1,0 +1,12 @@
+{
+  "nextAction": "release APK 已覆盖安装到设备 f17804b 并完成启动烟测；归档任务",
+  "status": "completed",
+  "createdAt": "2026-07-06T20:09:24Z",
+  "title": "安装正式版到另一台 Android 真机",
+  "risk": "low",
+  "domain": "mobile-release",
+  "branch": "main",
+  "currentPhase": "completed",
+  "id": "install-release-to-additional-phone",
+  "complexity": "S"
+}

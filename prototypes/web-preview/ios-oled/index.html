@@ -1,0 +1,1712 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>foundHouse · iOS OLED Premium</title>
+  <style>
+    /* ── Design system: OLED Void × Electric Sapphire ──
+       Signature: pure black canvas, luminous sapphire CTAs, floating dark glass tab.
+       Depth via subtle elevation surfaces + colored glow, not gray wash. */
+    :root {
+      --canvas-0: #000000;
+      --canvas-1: #05070D;
+      --canvas-2: #0A0E18;
+      --surface: rgba(22, 28, 42, 0.72);
+      --surface-solid: #121722;
+      --surface-elev: #171D2B;
+      --ink: #F4F7FF;
+      --ink-2: rgba(226, 232, 255, 0.62);
+      --ink-3: rgba(226, 232, 255, 0.34);
+      --line: rgba(255, 255, 255, 0.08);
+      --line-strong: rgba(255, 255, 255, 0.14);
+      --sapphire: #5B8CFF;
+      --sapphire-deep: #3B6EF5;
+      --sapphire-soft: rgba(91, 140, 255, 0.16);
+      --mint: #2DD4BF;
+      --mint-soft: rgba(45, 212, 191, 0.14);
+      --amber: #FBBF24;
+      --amber-soft: rgba(251, 191, 36, 0.14);
+      --rose: #FB7185;
+      --rose-soft: rgba(251, 113, 133, 0.14);
+      --violet: #A78BFA;
+      --violet-soft: rgba(167, 139, 250, 0.14);
+      --glass: rgba(18, 23, 34, 0.62);
+      --glass-strong: rgba(28, 35, 52, 0.78);
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35), 0 4px 12px rgba(0, 0, 0, 0.25);
+      --shadow-md: 0 10px 28px rgba(0, 0, 0, 0.45), 0 2px 8px rgba(0, 0, 0, 0.3);
+      --shadow-lg: 0 22px 56px rgba(0, 0, 0, 0.55), 0 4px 14px rgba(0, 0, 0, 0.35);
+      --shadow-glow: 0 12px 36px rgba(59, 110, 245, 0.38);
+      --r-sm: 12px;
+      --r-md: 16px;
+      --r-lg: 22px;
+      --r-xl: 28px;
+      --r-pill: 999px;
+      --tab-space: 88px;
+      --safe-b: 18px;
+      --ease: cubic-bezier(0.32, 0.72, 0, 1);
+      --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+        "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      --phone-w: 393px;
+      --phone-h: 852px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--ink);
+      background:
+        radial-gradient(900px 520px at 0% -10%, rgba(59, 110, 245, 0.22) 0%, transparent 55%),
+        radial-gradient(800px 480px at 100% 0%, rgba(124, 58, 237, 0.16) 0%, transparent 50%),
+        radial-gradient(700px 400px at 50% 100%, rgba(20, 184, 166, 0.08) 0%, transparent 45%),
+        #05060A;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    button, input, select, textarea { font: inherit; color: inherit; }
+    button { cursor: pointer; border: 0; background: none; -webkit-tap-highlight-color: transparent; }
+    input, select, textarea { outline: none; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* Studio shell */
+    .studio {
+      min-height: 100%;
+      display: grid;
+      grid-template-columns: minmax(280px, 360px) 1fr;
+      gap: 32px;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 32px clamp(16px, 3vw, 40px);
+    }
+    @media (max-width: 960px) {
+      .studio { grid-template-columns: 1fr; justify-items: center; }
+      .panel { width: min(100%, 560px); }
+    }
+    .panel h1 {
+      margin: 0 0 8px;
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+    }
+    .panel .lead {
+      margin: 0 0 18px;
+      color: var(--ink-2);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+    .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+    .pill {
+      font-size: 11px; font-weight: 650; letter-spacing: 0.02em;
+      padding: 6px 11px; border-radius: var(--r-pill);
+      background: rgba(18, 23, 34, 0.72);
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: var(--shadow-sm);
+      color: var(--ink-2);
+      backdrop-filter: blur(12px);
+    }
+    .pill strong { color: var(--ink); }
+    .nav-group { margin-bottom: 14px; }
+    .nav-label {
+      font-size: 11px; font-weight: 650; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--ink-3); margin: 0 0 8px 10px;
+    }
+    .nav-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 5px; }
+    .nav-list button {
+      width: 100%; text-align: left; display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 14px; border-radius: 14px;
+      background: rgba(18, 23, 34, 0.55);
+      border: 1px solid transparent;
+      transition: 180ms var(--ease);
+    }
+    .nav-list button:hover { background: rgba(28, 35, 52, 0.85); }
+    .nav-list button.active {
+      background: rgba(28, 35, 52, 0.95);
+      border-color: rgba(91, 140, 255, 0.28);
+      box-shadow: var(--shadow-md), 0 0 0 1px rgba(91,140,255,0.12);
+    }
+    .nav-list .n { font-size: 13px; font-weight: 600; letter-spacing: -0.01em; }
+    .nav-list .h { font-size: 11px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+    .note {
+      margin-top: 10px; padding: 14px 16px; border-radius: 18px;
+      background: rgba(18, 23, 34, 0.72); border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: var(--shadow-sm); font-size: 13px; line-height: 1.55; color: var(--ink-2);
+      backdrop-filter: blur(16px);
+    }
+    .note code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 11px; background: rgba(0,0,0,0.35);
+      border: 1px solid var(--line); padding: 1px 6px; border-radius: 6px; color: var(--ink);
+    }
+    .note a { color: var(--sapphire); text-decoration: none; font-weight: 650; }
+    .stage { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    .caption { font-size: 12px; color: var(--ink-2); text-align: center; letter-spacing: 0.01em; }
+
+    /* Device frame */
+    .device {
+      width: var(--phone-w); height: var(--phone-h);
+      border-radius: 54px; padding: 12px;
+      background:
+        linear-gradient(145deg, #2a2d35 0%, #0f1115 45%, #1c1f26 100%);
+      box-shadow:
+        0 50px 100px rgba(15, 23, 42, 0.35),
+        inset 0 0 0 1px rgba(255,255,255,0.1),
+        inset 0 1px 0 rgba(255,255,255,0.15);
+      position: relative;
+    }
+    .device::after {
+      content: ""; position: absolute; inset: 5px; border-radius: 50px;
+      border: 1px solid rgba(255,255,255,0.06); pointer-events: none;
+    }
+    .device::before {
+      content: ""; position: absolute; top: 18px; left: 50%; transform: translateX(-50%);
+      width: 118px; height: 34px; background: #050608; border-radius: 20px; z-index: 12;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+    }
+    .screen {
+      width: 100%; height: 100%; border-radius: 44px; overflow: hidden;
+      position: relative; display: flex; flex-direction: column;
+      background:
+        radial-gradient(520px 320px at 90% -8%, rgba(124, 58, 237, 0.22), transparent 60%),
+        radial-gradient(480px 300px at -10% 12%, rgba(59, 110, 245, 0.2), transparent 55%),
+        radial-gradient(420px 280px at 50% 100%, rgba(45, 212, 191, 0.08), transparent 50%),
+        linear-gradient(180deg, #0A0E18 0%, #05070D 48%, #000000 100%);
+      isolation: isolate;
+    }
+    .screen[data-accent="indigo"] { --sapphire: #818CF8; --sapphire-deep: #6366F1; --sapphire-soft: rgba(129,140,248,0.18); }
+    .screen[data-accent="teal"] { --sapphire: #2DD4BF; --sapphire-deep: #14B8A6; --sapphire-soft: rgba(45,212,191,0.16); }
+    .screen[data-accent="rose"] { --sapphire: #FB7185; --sapphire-deep: #F43F5E; --sapphire-soft: rgba(251,113,133,0.16); }
+
+    .status {
+      height: 52px; padding: 16px 30px 0; display: flex; justify-content: space-between;
+      align-items: center; font-size: 15px; font-weight: 650; letter-spacing: -0.02em;
+      flex-shrink: 0; position: relative; z-index: 5; color: var(--ink);
+    }
+    .status .right { display: flex; gap: 6px; align-items: center; opacity: 0.85; }
+
+    .app { flex: 1; min-height: 0; position: relative; display: flex; flex-direction: column; }
+    .view {
+      display: none; flex: 1; min-height: 0; flex-direction: column;
+      animation: rise 360ms var(--ease);
+    }
+    .view.active { display: flex; }
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(10px) scale(0.992); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .scroll {
+      flex: 1; min-height: 0; overflow: auto;
+      padding: 0 16px calc(var(--tab-space) + 8px);
+      -webkit-overflow-scrolling: touch;
+    }
+    .scroll.stack { padding-bottom: calc(var(--safe-b) + 108px); }
+    .scroll.plain { padding-bottom: calc(var(--safe-b) + 24px); }
+    .scroll::-webkit-scrollbar { width: 0; }
+
+    /* Typography / chrome */
+    .nav-large { padding: 2px 20px 10px; flex-shrink: 0; }
+    .nav-large .kicker {
+      font-size: 12px; font-weight: 650; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--ink-3); margin-bottom: 4px;
+    }
+    .nav-large h1 {
+      margin: 0; font-size: 36px; font-weight: 750; letter-spacing: -0.045em; line-height: 1.05;
+    }
+    .nav-large .subline {
+      margin: 6px 0 0; font-size: 14px; color: var(--ink-2); line-height: 1.4;
+    }
+    .nav-large .row-actions { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+
+    .nav-inline {
+      display: flex; align-items: center; gap: 2px;
+      padding: 4px 10px 10px; min-height: 48px; flex-shrink: 0;
+    }
+    .nav-inline .mid { flex: 1; text-align: center; min-width: 0; }
+    .nav-inline .t {
+      font-size: 17px; font-weight: 650; letter-spacing: -0.025em;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .nav-inline .s { font-size: 12px; color: var(--ink-2); margin-top: 1px; }
+    .ghost {
+      min-width: 44px; min-height: 36px; padding: 0 10px;
+      display: inline-flex; align-items: center; justify-content: center;
+      color: var(--sapphire); font-size: 17px; font-weight: 500; border-radius: 12px;
+    }
+    .ghost:active { opacity: 0.5; }
+    .ghost.strong { font-weight: 650; }
+    .ghost.danger { color: var(--rose); }
+    .icon-circle {
+      width: 34px; height: 34px; min-width: 34px; border-radius: 50%;
+      display: grid; place-items: center;
+      background: var(--glass-strong); border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: var(--shadow-sm); color: var(--ink); margin: 0 4px;
+      backdrop-filter: blur(12px);
+    }
+    .icon-circle svg { width: 16px; height: 16px; }
+    .icon-circle:active { transform: scale(0.94); }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      min-height: 52px; padding: 0 20px; border-radius: 16px;
+      font-size: 16px; font-weight: 650; letter-spacing: -0.015em;
+      transition: transform 120ms var(--ease), opacity 120ms, box-shadow 160ms;
+    }
+    .btn:active { transform: scale(0.975); }
+    .btn-primary {
+      background: linear-gradient(180deg, #7AA2FF 0%, var(--sapphire) 48%, var(--sapphire-deep) 100%);
+      color: #fff; box-shadow: var(--shadow-glow), inset 0 1px 0 rgba(255,255,255,0.22);
+    }
+    .btn-soft {
+      background: var(--glass-strong); color: var(--sapphire);
+      border: 1px solid rgba(255,255,255,0.1); box-shadow: var(--shadow-sm);
+      backdrop-filter: blur(12px);
+    }
+    .btn-tint {
+      background: var(--sapphire-soft); color: #BFD0FF;
+    }
+    .btn-sm { min-height: 36px; padding: 0 14px; font-size: 14px; border-radius: 12px; }
+    .btn-block { width: 100%; }
+
+    .fab {
+      position: absolute; right: 18px; bottom: calc(var(--tab-space) - 6px);
+      z-index: 7; min-height: 54px; padding: 0 20px 0 16px; border-radius: var(--r-pill);
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(180deg, #5B8CFF, var(--sapphire-deep));
+      color: #fff; font-size: 15px; font-weight: 650;
+      box-shadow: var(--shadow-glow), 0 16px 40px rgba(15,23,42,0.18);
+    }
+    .fab:active { transform: scale(0.96); }
+    .fab svg { width: 18px; height: 18px; }
+
+    /* Glass cards */
+    .glass {
+      background: var(--surface);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--r-lg);
+      box-shadow: var(--shadow-md);
+      backdrop-filter: blur(22px) saturate(160%);
+      -webkit-backdrop-filter: blur(22px) saturate(160%);
+      overflow: hidden;
+    }
+    .glass-solid {
+      background: var(--surface-solid);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--r-lg);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+
+    .bento {
+      display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 10px; margin-bottom: 18px;
+    }
+    .bento .tile {
+      position: relative; overflow: hidden;
+      border-radius: 20px; padding: 14px 12px 12px;
+      background: var(--surface-elev);
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: var(--shadow-sm);
+      min-height: 84px;
+    }
+    .bento .tile.hero {
+      background:
+        radial-gradient(120px 80px at 100% 0%, rgba(255,255,255,0.18), transparent 60%),
+        linear-gradient(145deg, #7AA2FF 0%, #3B6EF5 45%, #1D4ED8 100%);
+      color: #fff; border: 0; box-shadow: var(--shadow-glow);
+    }
+    .bento .tile .n {
+      font-size: 26px; font-weight: 750; letter-spacing: -0.04em;
+      font-variant-numeric: tabular-nums; line-height: 1;
+    }
+    .bento .tile .l {
+      margin-top: 6px; font-size: 12px; font-weight: 550; opacity: 0.72;
+    }
+    .bento .tile.hero .l { opacity: 0.88; }
+    .bento .tile::after {
+      content: ""; position: absolute; right: -12px; bottom: -18px;
+      width: 56px; height: 56px; border-radius: 50%;
+      background: rgba(47,107,255,0.08);
+    }
+    .bento .tile.hero::after { background: rgba(255,255,255,0.12); }
+
+    .sec {
+      font-size: 13px; font-weight: 650; color: var(--ink-2);
+      letter-spacing: -0.01em; margin: 18px 4px 10px; display: flex;
+      justify-content: space-between; align-items: baseline;
+    }
+    .sec span { font-size: 12px; font-weight: 500; color: var(--ink-3); }
+    .foot {
+      font-size: 12px; color: var(--ink-3); line-height: 1.45;
+      margin: 10px 6px 4px;
+    }
+
+    /* Rows */
+    .row {
+      display: flex; align-items: center; gap: 12px;
+      width: 100%; text-align: left; padding: 13px 14px; min-height: 64px;
+      position: relative; background: transparent;
+    }
+    .row:active { background: rgba(255,255,255,0.04); }
+    .row + .row::before {
+      content: ""; position: absolute; left: 60px; right: 14px; top: 0;
+      height: 1px; background: var(--line);
+    }
+    .row.plain + .row.plain::before { left: 14px; }
+    .avatar {
+      width: 42px; height: 42px; border-radius: 14px; flex-shrink: 0;
+      display: grid; place-items: center; color: #fff;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.25);
+    }
+    .avatar svg { width: 20px; height: 20px; }
+    .row .body { flex: 1; min-width: 0; }
+    .row .title {
+      font-size: 16px; font-weight: 650; letter-spacing: -0.02em;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .row .meta {
+      margin-top: 3px; font-size: 13px; color: var(--ink-2);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .row .trail {
+      display: flex; flex-direction: column; align-items: flex-end; gap: 5px; flex-shrink: 0;
+    }
+    .price {
+      font-size: 16px; font-weight: 700; letter-spacing: -0.03em;
+      font-variant-numeric: tabular-nums;
+    }
+    .chev {
+      width: 8px; height: 14px; opacity: 0.35;
+      background: no-repeat center / contain;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 14' fill='none' stroke='%23E2E8FF' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 1l6 6-6 6'/%3E%3C/svg%3E");
+    }
+
+    .chip {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 4px 9px; border-radius: 8px;
+      font-size: 11px; font-weight: 650; letter-spacing: 0.01em;
+      background: rgba(255,255,255,0.06); color: var(--ink-2);
+    }
+    .chip.blue { background: var(--sapphire-soft); color: #BFD0FF; }
+    .chip.green { background: var(--mint-soft); color: #5EEAD4; }
+    .chip.amber { background: var(--amber-soft); color: #FCD34D; }
+    .chip.rose { background: var(--rose-soft); color: #FDA4AF; }
+    .chip.violet { background: var(--violet-soft); color: #DDD6FE; }
+
+    .filters {
+      display: flex; gap: 8px; overflow-x: auto; padding: 2px 0 14px;
+      scrollbar-width: none;
+    }
+    .filters::-webkit-scrollbar { display: none; }
+    .filter {
+      flex-shrink: 0; min-height: 34px; padding: 0 14px; border-radius: var(--r-pill);
+      background: var(--surface); border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: var(--shadow-sm); font-size: 13px; font-weight: 600; color: var(--ink-2);
+      backdrop-filter: blur(10px);
+    }
+    .filter.on {
+      background: #F4F7FF; color: #0B1220; border-color: transparent;
+      box-shadow: 0 8px 20px rgba(91,140,255,0.18);
+    }
+
+    .seg {
+      display: flex; padding: 3px; gap: 3px; border-radius: 12px;
+      background: rgba(255,255,255,0.06);
+    }
+    .seg button {
+      flex: 1; min-height: 36px; border-radius: 10px;
+      font-size: 13px; font-weight: 650; color: var(--ink-2);
+      transition: 160ms var(--ease);
+    }
+    .seg button.on {
+      background: #1C2334; color: var(--ink);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(91,140,255,0.22);
+    }
+    .seg.lg button { min-height: 42px; font-size: 14px; }
+
+    /* Forms */
+    .field {
+      display: flex; align-items: center; gap: 12px;
+      min-height: 54px; padding: 10px 16px; position: relative;
+    }
+    .field + .field::before {
+      content: ""; position: absolute; left: 16px; right: 0; top: 0;
+      height: 1px; background: var(--line);
+    }
+    .field label { width: 88px; flex-shrink: 0; font-size: 15px; font-weight: 550; color: var(--ink-2); }
+    .field input, .field select, .field textarea {
+      flex: 1; border: 0; background: transparent; font-size: 16px; font-weight: 550;
+      min-height: 34px; padding: 0; text-align: right; letter-spacing: -0.015em;
+    }
+    .field textarea { text-align: left; min-height: 80px; padding: 8px 0; resize: vertical; font-weight: 450; }
+    .field input::placeholder, .field textarea::placeholder { color: var(--ink-3); font-weight: 450; }
+
+    .photos { display: flex; gap: 10px; overflow-x: auto; padding: 14px 16px 16px; }
+    .photo {
+      width: 78px; height: 78px; border-radius: 16px; flex-shrink: 0;
+      display: grid; place-items: center; font-size: 12px; font-weight: 650;
+      border: 0;
+    }
+    .photo.add {
+      color: var(--sapphire); background: var(--sapphire-soft);
+      border: 1px dashed rgba(91,140,255,0.4);
+    }
+    .photo.shot {
+      color: #E0E7FF;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.12), transparent),
+        linear-gradient(160deg, #312E81, #1D4ED8 55%, #2563EB);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Detail hero */
+    .hero {
+      position: relative; overflow: hidden;
+      border-radius: 26px; padding: 20px 18px 16px;
+      background:
+        radial-gradient(240px 140px at 100% 0%, rgba(255,255,255,0.16), transparent 55%),
+        linear-gradient(155deg, #7AA2FF 0%, #3B6EF5 42%, #1E3A8A 100%);
+      color: #fff; box-shadow: var(--shadow-glow); margin-bottom: 14px;
+    }
+    .hero .label { font-size: 12px; font-weight: 600; opacity: 0.82; letter-spacing: 0.04em; text-transform: uppercase; }
+    .hero .amount {
+      margin-top: 6px; font-size: 38px; font-weight: 760; letter-spacing: -0.045em;
+      font-variant-numeric: tabular-nums; line-height: 1;
+    }
+    .hero .amount small { font-size: 15px; font-weight: 550; opacity: 0.8; letter-spacing: 0; }
+    .hero .pills { margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
+    .hero .pill-w {
+      padding: 5px 10px; border-radius: 8px; font-size: 12px; font-weight: 650;
+      background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.22);
+    }
+    .hero .metrics {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 16px;
+    }
+    .hero .m {
+      background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 14px; padding: 10px 8px; text-align: center;
+      backdrop-filter: blur(8px);
+    }
+    .hero .m .v { font-size: 18px; font-weight: 750; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+    .hero .m .k { font-size: 11px; opacity: 0.8; margin-top: 2px; }
+
+    .bars { padding: 8px 16px 14px; }
+    .bar { margin: 12px 0; }
+    .bar .top { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; }
+    .bar .top .muted { color: var(--ink-2); font-variant-numeric: tabular-nums; font-weight: 550; }
+    .track {
+      height: 7px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow: hidden;
+    }
+    .fill {
+      height: 100%; border-radius: inherit;
+      background: linear-gradient(90deg, #7AA2FF, var(--sapphire));
+    }
+    .fill.mint { background: linear-gradient(90deg, #5EEAD4, var(--mint)); }
+    .fill.violet { background: linear-gradient(90deg, #C4B5FD, var(--violet)); }
+    .fill.amber { background: linear-gradient(90deg, #FCD34D, var(--amber)); }
+    .fill.teal { background: linear-gradient(90deg, #67E8F9, #06B6D4); }
+
+    .score-wrap { display: grid; place-items: center; padding: 18px 0 8px; }
+    .ring {
+      width: 140px; height: 140px; border-radius: 50%;
+      background:
+        radial-gradient(circle at center, #121722 0 57%, transparent 58%),
+        conic-gradient(var(--sapphire) 0 78%, rgba(255,255,255,0.08) 78% 100%);
+      display: grid; place-items: center;
+      box-shadow: 0 16px 40px rgba(59,110,245,0.28);
+    }
+    .ring .big {
+      font-size: 44px; font-weight: 780; letter-spacing: -0.05em; line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+    .ring .cap { font-size: 12px; color: var(--ink-2); text-align: center; margin-top: 2px; font-weight: 550; }
+
+    /* Checklist */
+    .check-item { padding: 14px 16px; position: relative; }
+    .check-item + .check-item::before {
+      content: ""; position: absolute; left: 16px; right: 0; top: 0; height: 1px; background: var(--line);
+    }
+    .check-item .lab { font-size: 15px; font-weight: 600; margin-bottom: 10px; letter-spacing: -0.01em; }
+    .check-seg { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+    .check-seg.three { grid-template-columns: repeat(3, 1fr); }
+    .check-seg button {
+      min-height: 36px; border-radius: 10px; font-size: 12px; font-weight: 650;
+      background: rgba(255,255,255,0.06); color: var(--ink-2);
+    }
+    .check-seg button.on-good { background: var(--mint-soft); color: #5EEAD4; }
+    .check-seg button.on-ok { background: var(--amber-soft); color: #FCD34D; }
+    .check-seg button.on-bad { background: var(--rose-soft); color: #FDA4AF; }
+    .check-seg button.on-ns { background: var(--violet-soft); color: #DDD6FE; }
+    .prog {
+      height: 4px; border-radius: 999px; background: rgba(255,255,255,0.08);
+      overflow: hidden; margin: 0 16px 4px;
+    }
+    .prog > i { display: block; height: 100%; background: linear-gradient(90deg, #5EEAD4, var(--mint)); border-radius: inherit; }
+
+    /* Compare */
+    .table-card { overflow: auto; }
+    table.cmp {
+      width: 100%; border-collapse: collapse; font-size: 13px;
+      font-variant-numeric: tabular-nums;
+    }
+    table.cmp th, table.cmp td {
+      padding: 13px 12px; text-align: right; border-bottom: 1px solid var(--line);
+    }
+    table.cmp th:first-child, table.cmp td:first-child {
+      text-align: left; color: var(--ink-2); position: sticky; left: 0;
+      background: #121722; font-weight: 500; min-width: 72px;
+    }
+    table.cmp thead th {
+      font-size: 12px; font-weight: 700; color: var(--ink);
+      background: linear-gradient(180deg, #1A2130, #151B28);
+    }
+    table.cmp thead th:first-child { background: linear-gradient(180deg, #1A2130, #151B28); }
+    table.cmp .best { color: #5EEAD4; font-weight: 700; }
+
+    /* Switch */
+    .switch {
+      width: 50px; height: 30px; border-radius: 999px;
+      background: rgba(255,255,255,0.14); position: relative; flex-shrink: 0;
+      transition: background 200ms var(--ease);
+    }
+    .switch.on { background: var(--mint); }
+    .switch::after {
+      content: ""; position: absolute; top: 2px; left: 2px; width: 26px; height: 26px;
+      border-radius: 50%; background: #fff;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.35), 0 1px 1px rgba(0,0,0,0.2);
+      transition: transform 220ms var(--ease);
+    }
+    .switch.on::after { transform: translateX(20px); }
+
+    .weight-row {
+      display: grid; grid-template-columns: 44px 1fr 34px; gap: 10px; align-items: center;
+      padding: 11px 16px; position: relative;
+    }
+    .weight-row + .weight-row::before {
+      content: ""; position: absolute; left: 16px; right: 0; top: 0; height: 1px; background: var(--line);
+    }
+    .weight-row input[type="range"] { width: 100%; accent-color: var(--sapphire); height: 28px; }
+    .weight-row strong { font-variant-numeric: tabular-nums; text-align: right; font-size: 14px; }
+
+    /* Floating glass tab bar — signature */
+    .tabbar {
+      position: absolute; left: 16px; right: 16px; bottom: calc(var(--safe-b) + 6px);
+      z-index: 8; height: 64px; padding: 6px;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px;
+      border-radius: 24px;
+      background: rgba(12, 16, 26, 0.72);
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: var(--shadow-lg), 0 0 0 1px rgba(91,140,255,0.08), 0 0 40px rgba(59,110,245,0.12);
+      backdrop-filter: blur(28px) saturate(180%);
+      -webkit-backdrop-filter: blur(28px) saturate(180%);
+    }
+    .tabbar button {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 3px; color: var(--ink-3); font-size: 10px; font-weight: 650;
+      border-radius: 18px; min-height: 52px; letter-spacing: -0.01em;
+      transition: 180ms var(--ease);
+    }
+    .tabbar button.active {
+      color: #BFD0FF;
+      background: linear-gradient(180deg, rgba(91,140,255,0.22), rgba(59,110,245,0.12));
+      box-shadow: 0 4px 14px rgba(59,110,245,0.18), inset 0 0 0 1px rgba(91,140,255,0.28);
+    }
+    .tabbar svg { width: 22px; height: 22px; }
+
+    .dock {
+      position: absolute; left: 0; right: 0; bottom: 0; z-index: 6;
+      padding: 12px 16px calc(var(--safe-b) + 10px);
+      background: linear-gradient(180deg, rgba(0,0,0,0), rgba(5,7,13,0.72) 30%, rgba(0,0,0,0.96) 70%);
+      display: grid; gap: 8px;
+    }
+    .dock.dual { grid-template-columns: 1fr 1.35fr; }
+
+    .empty { text-align: center; padding: 52px 20px; }
+    .empty .glyph {
+      width: 72px; height: 72px; border-radius: 22px; margin: 0 auto 18px;
+      display: grid; place-items: center; color: var(--sapphire);
+      background: var(--surface); border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: var(--shadow-md);
+    }
+    .empty .glyph svg { width: 32px; height: 32px; }
+    .empty h3 {
+      margin: 0 0 8px; font-size: 22px; font-weight: 750; letter-spacing: -0.03em;
+    }
+    .empty p {
+      margin: 0 auto 22px; max-width: 260px; color: var(--ink-2);
+      font-size: 14px; line-height: 1.5;
+    }
+
+    /* Sheet */
+    .overlay {
+      position: absolute; inset: 0; z-index: 20;
+      background: rgba(0, 0, 0, 0.55);
+      display: none; align-items: flex-end;
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    }
+    .overlay.show { display: flex; }
+    .sheet {
+      width: 100%;
+      background: linear-gradient(180deg, #1A2130, #0B0F18 45%, #000000);
+      border-radius: 28px 28px 0 0;
+      padding: 10px 0 calc(var(--safe-b) + 10px);
+      box-shadow: 0 -20px 60px rgba(0,0,0,0.55);
+      animation: sheet-up 360ms var(--ease);
+      max-height: 88%; overflow: auto;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    @keyframes sheet-up {
+      from { transform: translateY(100%); }
+      to { transform: none; }
+    }
+    .sheet-grab {
+      width: 40px; height: 5px; border-radius: 999px;
+      background: rgba(255,255,255,0.18); margin: 4px auto 12px;
+    }
+    .sheet h2 {
+      margin: 0; padding: 2px 22px 6px;
+      font-size: 22px; font-weight: 750; letter-spacing: -0.03em;
+    }
+    .sheet .desc {
+      margin: 0 22px 14px; color: var(--ink-2); font-size: 14px; line-height: 1.45;
+    }
+    .sheet-actions {
+      display: grid; grid-template-columns: 1fr 1.25fr; gap: 10px; padding: 14px 16px 0;
+    }
+
+    .toast {
+      position: absolute; left: 20px; right: 20px; top: 58px; z-index: 30;
+      padding: 13px 16px; border-radius: 16px; text-align: center;
+      font-size: 14px; font-weight: 600; letter-spacing: -0.01em;
+      color: #fff;
+      background: rgba(18, 24, 38, 0.92);
+      border: 1px solid rgba(91,140,255,0.22);
+      box-shadow: var(--shadow-lg), 0 0 24px rgba(59,110,245,0.18);
+      backdrop-filter: blur(16px);
+      opacity: 0; transform: translateY(-14px) scale(0.98);
+      pointer-events: none; transition: 300ms var(--ease);
+    }
+    .toast.show { opacity: 1; transform: none; }
+    .toast.bottom { top: auto; bottom: calc(var(--tab-space) + 4px); }
+    .toast.high { top: auto; bottom: calc(var(--safe-b) + 108px); }
+
+    .swatch-row { display: flex; gap: 14px; padding: 16px; flex-wrap: wrap; }
+    .swatch {
+      width: 38px; height: 38px; border-radius: 50%;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12), var(--shadow-sm);
+      position: relative;
+    }
+    .swatch.on::after {
+      content: ""; position: absolute; inset: -5px; border-radius: 50%;
+      border: 2.5px solid var(--sapphire);
+    }
+
+    .info-row {
+      display: flex; gap: 12px; padding: 14px 16px; position: relative;
+    }
+    .info-row + .info-row::before {
+      content: ""; position: absolute; left: 60px; right: 0; top: 0; height: 1px; background: var(--line);
+    }
+    .info-row .ico {
+      width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center;
+      color: #fff; flex-shrink: 0;
+    }
+    .info-row .ico svg { width: 16px; height: 16px; }
+    .info-row .t { font-size: 15px; font-weight: 650; letter-spacing: -0.015em; }
+    .info-row .d { font-size: 13px; color: var(--ink-2); margin-top: 3px; line-height: 1.4; }
+
+    .quick-grid { display: grid; gap: 10px; }
+    .quick-card {
+      display: flex; align-items: center; gap: 12px; width: 100%; text-align: left;
+      padding: 14px; border-radius: 18px;
+      background: var(--surface-solid); border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: var(--shadow-sm);
+    }
+    .quick-card:active { transform: scale(0.985); }
+    .quick-card .ic {
+      width: 40px; height: 40px; border-radius: 13px; display: grid; place-items: center; color: #fff;
+    }
+    .quick-card .ic svg { width: 18px; height: 18px; }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="studio">
+    <aside class="panel">
+      <div class="pills">
+        <span class="pill"><strong>foundHouse</strong> OLED Premium</span>
+        <span class="pill">True Black</span>
+        <span class="pill">Electric Sapphire</span>
+      </div>
+      <h1>暗色 OLED 原型</h1>
+      <p class="lead">
+        纯黑画布、电光蓝宝石强调、暗玻璃悬浮 Tab。
+        功能全保留；浅色 Premium / Kawaii 均未覆盖。
+      </p>
+      <div class="nav-group">
+        <div class="nav-label">主路径</div>
+        <ul class="nav-list" id="sideNavMain">
+          <li><button type="button" data-go="scan" class="active"><span class="n">扫楼 · 村列表</span><span class="h">1</span></button></li>
+          <li><button type="button" data-go="village"><span class="n">村详情 · 楼栋</span><span class="h">2</span></button></li>
+          <li><button type="button" data-go="building"><span class="n">楼栋房源</span><span class="h">3</span></button></li>
+          <li><button type="button" data-go="record"><span class="n">快速记录</span><span class="h">4</span></button></li>
+          <li><button type="button" data-go="detail"><span class="n">房源详情</span><span class="h">5</span></button></li>
+          <li><button type="button" data-go="houses"><span class="n">全部房源</span><span class="h">Tab</span></button></li>
+          <li><button type="button" data-go="compare"><span class="n">对比导出</span><span class="h">Tab</span></button></li>
+          <li><button type="button" data-go="settings"><span class="n">设置</span><span class="h">Tab</span></button></li>
+        </ul>
+      </div>
+      <div class="nav-group">
+        <div class="nav-label">二级</div>
+        <ul class="nav-list" id="sideNavSub">
+          <li><button type="button" data-go="checklist"><span class="n">Checklist</span><span class="h">五模块</span></button></li>
+          <li><button type="button" data-go="score"><span class="n">评分详情</span><span class="h">环形分</span></button></li>
+          <li><button type="button" data-go="preference"><span class="n">偏好设置</span><span class="h">硬筛</span></button></li>
+          <li><button type="button" data-go="privacy"><span class="n">隐私说明</span><span class="h">脱敏</span></button></li>
+          <li><button type="button" data-go="compare-empty"><span class="n">对比空状态</span><span class="h">Empty</span></button></li>
+        </ul>
+      </div>
+      <div class="note">
+        浅色 Premium：<a href="../ios/index.html">../ios/index.html</a><br />
+        Kawaii 原版：<a href="../index.html">../index.html</a><br />
+        本文件：<code>prototypes/web-preview/ios-oled/index.html</code><br />
+        OLED：真黑底 + 发光强调 + 暗玻璃层级，避免灰泥背景。
+      </div>
+    </aside>
+
+    <div class="stage">
+      <div class="device" aria-label="iPhone">
+        <div class="screen" id="deviceScreen" data-accent="blue">
+          <div class="status">
+            <span>9:41</span>
+            <span class="right" aria-hidden="true">
+              <svg width="17" height="12" viewBox="0 0 17 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="0.5"/><rect x="4.5" y="5" width="3" height="7" rx="0.5"/><rect x="9" y="2.5" width="3" height="9.5" rx="0.5"/><rect x="13.5" y="0" width="3" height="12" rx="0.5"/></svg>
+              <svg width="27" height="13" viewBox="0 0 27 13" fill="none"><rect x="0.5" y="1" width="22" height="11" rx="3.2" stroke="currentColor"/><rect x="2" y="2.6" width="16" height="7.8" rx="1.6" fill="currentColor"/><path d="M24 4.5v4c1.2.4 1.2 3 0 3.4V4.5z" fill="currentColor" opacity=".35"/></svg>
+            </span>
+          </div>
+
+          <div class="app">
+            <!-- SCAN -->
+            <section class="view active" id="view-scan" data-tab="scan">
+              <div class="nav-large">
+                <div class="kicker">foundHouse</div>
+                <h1>扫楼</h1>
+                <p class="subline">先记村，再进村录楼栋与房源</p>
+                <div class="row-actions">
+                  <button type="button" class="btn btn-tint btn-sm" data-action="open-add-village">＋ 新增村</button>
+                </div>
+              </div>
+              <div class="scroll">
+                <div class="bento" aria-label="摘要">
+                  <div class="tile hero">
+                    <div class="n" id="statVillages">3</div>
+                    <div class="l">正在扫的村</div>
+                  </div>
+                  <div class="tile">
+                    <div class="n" id="statHouses">11</div>
+                    <div class="l">套房源</div>
+                  </div>
+                  <div class="tile">
+                    <div class="n">2</div>
+                    <div class="l">待跟进</div>
+                  </div>
+                </div>
+                <div class="sec">我的村 <span>轻点进入</span></div>
+                <div class="glass-solid" id="villageList"></div>
+                <div class="empty hidden" id="villageEmpty">
+                  <div class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20V9l8-5 8 5v11"/><path d="M9 20v-6h6v6"/></svg></div>
+                  <h3>还没有村</h3>
+                  <p>先添加你正在扫的城中村或老小区，再进去录楼栋和房源。</p>
+                  <button type="button" class="btn btn-primary" data-action="open-add-village">新增村</button>
+                </div>
+                <p class="foot">数据默认保存在本机。弱网也可继续记录。</p>
+              </div>
+              <button type="button" class="fab" data-action="open-add-village" aria-label="新增村">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
+                新增村
+              </button>
+            </section>
+
+            <!-- VILLAGE -->
+            <section class="view" id="view-village" data-tab="scan">
+              <div class="nav-inline">
+                <button type="button" class="ghost" data-go="scan">‹ 扫楼</button>
+                <div class="mid">
+                  <div class="t" id="villageTitle">白石洲西区</div>
+                  <div class="s" id="villageSub">3 栋 · 6 套 · 今天更新</div>
+                </div>
+                <button type="button" class="icon-circle" data-action="open-add-building" aria-label="新增楼栋">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                </button>
+              </div>
+              <div class="scroll stack">
+                <div class="glass-solid">
+                  <div class="row plain">
+                    <div class="avatar" style="background:linear-gradient(145deg,#34D399,#0D9488)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg></div>
+                    <div class="body">
+                      <div class="title">离线可记</div>
+                      <div class="meta">本村进度：可继续扫楼栋</div>
+                    </div>
+                    <span class="chip green">本地</span>
+                  </div>
+                </div>
+                <div class="sec">楼栋</div>
+                <div class="glass-solid" id="buildingList"></div>
+                <div class="sec">最近房源</div>
+                <div class="glass-solid" id="houseListRecent"></div>
+              </div>
+              <div class="dock dual">
+                <button type="button" class="btn btn-soft" data-action="open-add-building">新增楼栋</button>
+                <button type="button" class="btn btn-primary" data-action="open-add-house">快速记一套</button>
+              </div>
+            </section>
+
+            <!-- BUILDING -->
+            <section class="view" id="view-building" data-tab="scan">
+              <div class="nav-inline">
+                <button type="button" class="ghost" data-go="village">‹ 村</button>
+                <div class="mid">
+                  <div class="t" id="buildingTitle">8 栋</div>
+                  <div class="s" id="buildingSub">白石洲西区</div>
+                </div>
+                <button type="button" class="ghost strong" data-action="open-add-house">记录</button>
+              </div>
+              <div class="scroll stack">
+                <div class="sec">本栋房源</div>
+                <div class="glass-solid" id="buildingHouseList"></div>
+              </div>
+              <div class="dock">
+                <button type="button" class="btn btn-primary btn-block" data-action="open-add-house">在本栋快速记录</button>
+              </div>
+            </section>
+
+            <!-- RECORD -->
+            <section class="view" id="view-record" data-tab="scan">
+              <div class="nav-inline">
+                <button type="button" class="ghost danger" data-go="village">取消</button>
+                <div class="mid">
+                  <div class="t">快速记录</div>
+                  <div class="s">路边草稿 · 稍后补全</div>
+                </div>
+                <button type="button" class="ghost strong" data-action="save-and-open">存储</button>
+              </div>
+              <div class="scroll stack">
+                <div class="sec">基础</div>
+                <div class="glass-solid">
+                  <div class="field">
+                    <label for="rentInput">月租</label>
+                    <input id="rentInput" type="number" inputmode="numeric" value="2800" placeholder="元" />
+                  </div>
+                  <div style="padding:12px 16px 16px">
+                    <div style="font-size:15px;font-weight:550;color:var(--ink-2);margin-bottom:10px">房型</div>
+                    <div class="seg lg" id="roomTypeSeg">
+                      <button type="button" data-val="一房">一房</button>
+                      <button type="button" class="on" data-val="两房">两房</button>
+                      <button type="button" data-val="三房">三房</button>
+                      <button type="button" data-val="单间">单间</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="sec">照片</div>
+                <div class="glass-solid">
+                  <div class="photos">
+                    <button type="button" class="photo add" id="addPhotoBtn">＋ 拍照</button>
+                    <div class="photo shot">客厅</div>
+                    <div class="photo shot">厨卫</div>
+                  </div>
+                  <p class="foot" style="padding:0 16px 14px;margin:0">权限拒绝也可只写文字保存。</p>
+                </div>
+                <div class="sec">备注</div>
+                <div class="glass-solid">
+                  <div class="field" style="align-items:flex-start">
+                    <textarea id="noteInput" placeholder="楼层、采光、中介口径…">2楼无电梯，采光一般，押一付一</textarea>
+                  </div>
+                </div>
+                <p class="foot">清单、联系人、评分可稍后补。保存仅写本地。</p>
+              </div>
+              <div class="dock dual">
+                <button type="button" class="btn btn-soft" data-action="save-draft">存草稿</button>
+                <button type="button" class="btn btn-primary" data-action="save-and-open">保存并查看</button>
+              </div>
+            </section>
+
+            <!-- DETAIL -->
+            <section class="view" id="view-detail" data-tab="houses">
+              <div class="nav-inline">
+                <button type="button" class="ghost" data-go="village">‹ 返回</button>
+                <div class="mid">
+                  <div class="t" id="detailTitle">8 栋 502</div>
+                  <div class="s">白石洲西区 · 两房 · 48㎡</div>
+                </div>
+                <span class="chip blue" style="margin-right:8px">候选</span>
+              </div>
+              <div class="scroll stack">
+                <div class="hero">
+                  <div class="label">月总成本（估）</div>
+                  <div class="amount">¥3,160 <small>/月</small></div>
+                  <div class="pills"><span class="pill-w">硬筛待确认</span></div>
+                  <div class="metrics">
+                    <div class="m"><div class="v">78</div><div class="k">综合分</div></div>
+                    <div class="m"><div class="v">42′</div><div class="k">通勤估</div></div>
+                    <div class="m"><div class="v">1</div><div class="k">风险项</div></div>
+                  </div>
+                </div>
+                <div class="sec">快捷补全</div>
+                <div class="quick-grid">
+                  <button type="button" class="quick-card" data-go="checklist">
+                    <div class="ic" style="background:linear-gradient(145deg,#A78BFA,#7C3AED)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+                    <div class="body" style="flex:1;text-align:left">
+                      <div class="title">Checklist</div>
+                      <div class="meta">五模块四态检查</div>
+                    </div>
+                    <span class="chev"></span>
+                  </button>
+                  <button type="button" class="quick-card" data-go="score">
+                    <div class="ic" style="background:linear-gradient(145deg,#60A5FA,#2563EB)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+                    <div class="body" style="flex:1;text-align:left">
+                      <div class="title">评分详情</div>
+                      <div class="meta">五维拆解与缺失说明</div>
+                    </div>
+                    <span class="chev"></span>
+                  </button>
+                </div>
+                <div class="sec">硬筛未通过</div>
+                <div class="glass-solid">
+                  <div class="row plain" style="align-items:flex-start">
+                    <div class="avatar" style="background:linear-gradient(145deg,#FB7185,#E11D48)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v5M12 16h.01"/><circle cx="12" cy="12" r="9"/></svg></div>
+                    <div class="body">
+                      <div class="title">押金规则不清</div>
+                      <div class="meta" style="white-space:normal">建议确认书面口径。仅为记录提示，非法务结论。</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="sec">费用与房屋</div>
+                <div class="glass-solid">
+                  <div class="row plain"><div class="body"><div class="title">月租</div><div class="meta">押一付一</div></div><div class="price">¥2,800</div></div>
+                  <div class="row plain"><div class="body"><div class="title">管理费 / 网费</div><div class="meta">估入月总成本</div></div><div class="price">¥360</div></div>
+                  <div class="row plain"><div class="body"><div class="title">朝向 / 电梯</div><div class="meta">南 · 无电梯 · 2 楼</div></div><span class="chip green">可做饭</span></div>
+                </div>
+              </div>
+              <div class="dock dual">
+                <button type="button" class="btn btn-soft" data-go="record">编辑</button>
+                <button type="button" class="btn btn-primary" data-action="add-compare">加入对比</button>
+              </div>
+            </section>
+
+            <!-- HOUSES -->
+            <section class="view" id="view-houses" data-tab="houses">
+              <div class="nav-large">
+                <div class="kicker">全局</div>
+                <h1>房源</h1>
+                <p class="subline">跨村筛选与跟进</p>
+              </div>
+              <div class="scroll">
+                <div class="filters" id="houseFilters">
+                  <button type="button" class="filter on" data-filter="all">全部</button>
+                  <button type="button" class="filter" data-filter="shortlisted">候选</button>
+                  <button type="button" class="filter" data-filter="draft">草稿</button>
+                  <button type="button" class="filter" data-filter="rejected">淘汰</button>
+                </div>
+                <div class="glass-solid" id="allHouseList"></div>
+              </div>
+            </section>
+
+            <!-- CHECKLIST -->
+            <section class="view" id="view-checklist" data-tab="houses">
+              <div class="nav-inline">
+                <button type="button" class="ghost" data-go="detail">‹ 详情</button>
+                <div class="mid">
+                  <div class="t">Checklist</div>
+                  <div class="s">五模块 · 点选即记</div>
+                </div>
+                <span class="chip green" id="checkProgress" style="margin-right:8px">3/12</span>
+              </div>
+              <div class="scroll plain" id="checklistRoot"></div>
+            </section>
+
+            <!-- SCORE -->
+            <section class="view" id="view-score" data-tab="houses">
+              <div class="nav-inline">
+                <button type="button" class="ghost" data-go="detail">‹ 详情</button>
+                <div class="mid">
+                  <div class="t">评分详情</div>
+                  <div class="s">mvp-2026-07 · 只读</div>
+                </div>
+                <span style="width:52px"></span>
+              </div>
+              <div class="scroll plain">
+                <div class="glass-solid">
+                  <div class="score-wrap">
+                    <div class="ring"><div><div class="big">78</div><div class="cap">/ 100</div></div></div>
+                  </div>
+                  <div style="text-align:center;padding-bottom:10px">
+                    <span class="chip amber">硬筛未完全通过 · 仍可记录</span>
+                  </div>
+                  <div class="row plain">
+                    <div class="body">
+                      <div class="title">自动评分</div>
+                      <div class="meta">仅本页示意，不落库</div>
+                    </div>
+                    <button type="button" class="switch on" id="autoScoreToggle" aria-label="自动评分"></button>
+                  </div>
+                </div>
+                <div class="sec">五维拆解</div>
+                <div class="glass-solid bars">
+                  <div class="bar"><div class="top"><span>成本 30%</span><span class="muted">22/30</span></div><div class="track"><div class="fill" style="width:73%"></div></div></div>
+                  <div class="bar"><div class="top"><span>通勤 20%</span><span class="muted">14/20</span></div><div class="track"><div class="fill teal" style="width:70%"></div></div></div>
+                  <div class="bar"><div class="top"><span>居住 25%</span><span class="muted">20/25</span></div><div class="track"><div class="fill mint" style="width:80%"></div></div></div>
+                  <div class="bar"><div class="top"><span>周边 15%</span><span class="muted">12/15</span></div><div class="track"><div class="fill violet" style="width:80%"></div></div></div>
+                  <div class="bar"><div class="top"><span>风险 10%</span><span class="muted">10/10</span></div><div class="track"><div class="fill amber" style="width:100%"></div></div></div>
+                </div>
+                <div class="sec">扣分与缺失</div>
+                <div class="glass-solid">
+                  <div class="row plain" style="align-items:flex-start">
+                    <div class="avatar" style="background:linear-gradient(145deg,#FBBF24,#F59E0B)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v5M12 16h.01"/></svg></div>
+                    <div class="body"><div class="title">水电单价缺失</div><div class="meta" style="white-space:normal">成本维上限已按规则封顶（示意）</div></div>
+                  </div>
+                  <div class="row plain" style="align-items:flex-start">
+                    <div class="avatar" style="background:linear-gradient(145deg,#FB7185,#E11D48)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v5M12 16h.01"/></svg></div>
+                    <div class="body"><div class="title">押金规则不清</div><div class="meta" style="white-space:normal">硬筛提示 · 非法务结论</div></div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- COMPARE -->
+            <section class="view" id="view-compare" data-tab="compare">
+              <div class="nav-large">
+                <div class="kicker">决策</div>
+                <h1>对比</h1>
+                <p class="subline">并排关键字段 · 导出默认脱敏</p>
+              </div>
+              <div class="scroll">
+                <div class="glass-solid" style="margin-bottom:14px">
+                  <div class="row plain">
+                    <div class="body">
+                      <div class="title">已选 2 套</div>
+                      <div class="meta">电话 / 微信 / 门牌导出默认隐藏</div>
+                    </div>
+                    <span class="chip green">脱敏开</span>
+                  </div>
+                </div>
+                <div class="glass-solid table-card">
+                  <table class="cmp">
+                    <thead><tr><th>字段</th><th>8栋502</th><th>12栋301</th></tr></thead>
+                    <tbody>
+                      <tr><td>月总成本</td><td class="best">3160</td><td>3480</td></tr>
+                      <tr><td>综合分</td><td>78</td><td class="best">84</td></tr>
+                      <tr><td>通勤估</td><td>42′</td><td class="best">35′</td></tr>
+                      <tr><td>房型面积</td><td>两房 48㎡</td><td>两房 52㎡</td></tr>
+                      <tr><td>风险</td><td>押金不清</td><td class="best">无 blocker</td></tr>
+                      <tr><td>门牌</td><td colspan="2" style="text-align:left;color:var(--ink-2)">已脱敏 · ***</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="sec">导出</div>
+                <div class="glass-solid">
+                  <div class="field">
+                    <label for="exportFmt">格式</label>
+                    <select id="exportFmt"><option>PDF（推荐）</option><option>图片长图</option></select>
+                  </div>
+                  <div class="row plain">
+                    <div class="body">
+                      <div class="title">脱敏敏感字段</div>
+                      <div class="meta">默认开启</div>
+                    </div>
+                    <button type="button" class="switch on" id="maskToggle" aria-label="脱敏"></button>
+                  </div>
+                </div>
+                <div style="padding:16px 0 8px">
+                  <button type="button" class="btn btn-primary btn-block" data-action="export-pdf">导出对比</button>
+                </div>
+              </div>
+            </section>
+
+            <!-- COMPARE EMPTY -->
+            <section class="view" id="view-compare-empty" data-tab="compare">
+              <div class="nav-large">
+                <div class="kicker">决策</div>
+                <h1>对比</h1>
+              </div>
+              <div class="scroll">
+                <div class="empty" style="margin-top:36px">
+                  <div class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 5h6v14H5zM13 5h6v8h-6z"/></svg></div>
+                  <h3>还没有对比项</h3>
+                  <p>在房源详情点「加入对比」，并排比较关键决策字段。</p>
+                  <button type="button" class="btn btn-primary" data-go="houses">去房源列表</button>
+                </div>
+              </div>
+            </section>
+
+            <!-- SETTINGS -->
+            <section class="view" id="view-settings" data-tab="settings">
+              <div class="nav-large">
+                <div class="kicker">我的</div>
+                <h1>设置</h1>
+                <p class="subline">偏好 · 隐私 · 强调色</p>
+              </div>
+              <div class="scroll">
+                <div class="sec">决策基准</div>
+                <div class="glass-solid">
+                  <button type="button" class="row" data-go="preference">
+                    <div class="avatar" style="background:linear-gradient(145deg,#60A5FA,#2563EB)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2"/></svg></div>
+                    <div class="body"><div class="title">偏好设置</div><div class="meta">预算 / 通勤 / 硬条件 / 权重</div></div>
+                    <span class="chev"></span>
+                  </button>
+                  <button type="button" class="row" data-go="privacy">
+                    <div class="avatar" style="background:linear-gradient(145deg,#94A3B8,#64748B)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg></div>
+                    <div class="body"><div class="title">隐私说明</div><div class="meta">本地优先 · 导出脱敏</div></div>
+                    <span class="chev"></span>
+                  </button>
+                </div>
+                <div class="sec">强调色</div>
+                <div class="glass-solid">
+                  <div class="swatch-row" id="swatches">
+                    <button type="button" class="swatch on" data-theme="blue" style="background:#5B8CFF" aria-label="电光蓝"></button>
+                    <button type="button" class="swatch" data-theme="indigo" style="background:#818CF8" aria-label="靛蓝"></button>
+                    <button type="button" class="swatch" data-theme="teal" style="background:#2DD4BF" aria-label="青绿"></button>
+                    <button type="button" class="swatch" data-theme="rose" style="background:#FB7185" aria-label="玫红"></button>
+                  </div>
+                </div>
+                <div class="sec">关于</div>
+                <div class="glass-solid">
+                  <div class="row plain">
+                    <div class="body">
+                      <div class="title">iOS OLED Premium 交互稿</div>
+                      <div class="meta">真实应用为 Flutter · 本页仅评审用</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- PREFERENCE -->
+            <section class="view" id="view-preference" data-tab="settings">
+              <div class="nav-inline">
+                <button type="button" class="ghost" data-go="settings">‹ 设置</button>
+                <div class="mid"><div class="t">偏好设置</div></div>
+                <button type="button" class="ghost strong" data-action="save-preference">存储</button>
+              </div>
+              <div class="scroll stack">
+                <div class="sec">预算与通勤</div>
+                <div class="glass-solid">
+                  <div class="field"><label for="maxTotal">月总成本</label><input id="maxTotal" type="number" value="4500" /></div>
+                  <div class="field"><label for="maxCommute">最大通勤</label><input id="maxCommute" type="number" value="45" /></div>
+                  <div class="field"><label for="dest">目的地</label><input id="dest" type="text" value="科技园地铁站" style="text-align:right" /></div>
+                  <div style="padding:12px 16px 16px">
+                    <div style="font-size:15px;font-weight:550;color:var(--ink-2);margin-bottom:10px">通勤方式</div>
+                    <div class="seg" id="commuteSeg">
+                      <button type="button" class="on" data-mode="transit">地铁</button>
+                      <button type="button" data-mode="walking">步行</button>
+                      <button type="button" data-mode="bicycling">骑行</button>
+                      <button type="button" data-mode="driving">驾车</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="sec">硬性条件</div>
+                <div class="glass-solid">
+                  <div class="row plain"><div class="body"><div class="title">独卫</div><div class="meta">必须</div></div><button type="button" class="switch on" data-hard="bath"></button></div>
+                  <div class="row plain"><div class="body"><div class="title">可做饭厨房</div><div class="meta">必须</div></div><button type="button" class="switch on" data-hard="kitchen"></button></div>
+                  <div class="row plain"><div class="body"><div class="title">电梯</div><div class="meta">不限</div></div><button type="button" class="switch" data-hard="elev"></button></div>
+                  <div class="row plain"><div class="body"><div class="title">可养宠</div><div class="meta">不限</div></div><button type="button" class="switch" data-hard="pet"></button></div>
+                </div>
+                <div class="sec">评分权重</div>
+                <div class="glass-solid" id="weightCard">
+                  <div class="weight-row"><span>成本</span><input type="range" min="0" max="50" value="30" data-w="cost" /><strong data-wlabel="cost">30</strong></div>
+                  <div class="weight-row"><span>通勤</span><input type="range" min="0" max="50" value="20" data-w="commute" /><strong data-wlabel="commute">20</strong></div>
+                  <div class="weight-row"><span>居住</span><input type="range" min="0" max="50" value="25" data-w="living" /><strong data-wlabel="living">25</strong></div>
+                  <div class="weight-row"><span>周边</span><input type="range" min="0" max="50" value="15" data-w="nearby" /><strong data-wlabel="nearby">15</strong></div>
+                  <div class="weight-row"><span>风险</span><input type="range" min="0" max="50" value="10" data-w="risk" /><strong data-wlabel="risk">10</strong></div>
+                </div>
+                <p class="foot" id="weightSum">合计 100%。保存时仅提醒，不强制。</p>
+              </div>
+              <div class="dock">
+                <button type="button" class="btn btn-primary btn-block" data-action="save-preference">保存偏好</button>
+              </div>
+            </section>
+
+            <!-- PRIVACY -->
+            <section class="view" id="view-privacy" data-tab="settings">
+              <div class="nav-inline">
+                <button type="button" class="ghost" data-go="settings">‹ 设置</button>
+                <div class="mid"><div class="t">隐私</div></div>
+                <span style="width:52px"></span>
+              </div>
+              <div class="scroll plain">
+                <div class="sec">数据存储</div>
+                <div class="glass-solid">
+                  <div class="info-row">
+                    <div class="ico" style="background:linear-gradient(145deg,#60A5FA,#2563EB)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></div>
+                    <div><div class="t">本地优先</div><div class="d">房源、照片、联系人默认只存本机，不上传云端。</div></div>
+                  </div>
+                  <div class="info-row">
+                    <div class="ico" style="background:linear-gradient(145deg,#94A3B8,#64748B)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg></div>
+                    <div><div class="t">敏感字段加密</div><div class="d">电话、微信、门牌以密文存储（AES-256-GCM 示意）。</div></div>
+                  </div>
+                </div>
+                <div class="sec">导出脱敏（默认开启）</div>
+                <div class="glass-solid">
+                  <div class="info-row">
+                    <div class="ico" style="background:linear-gradient(145deg,#34D399,#0D9488)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 8h12v11H6z"/><path d="M9 8V6a3 3 0 016 0v2"/></svg></div>
+                    <div><div class="t">隐藏联系人</div><div class="d">导出时默认隐藏姓名、电话、微信。</div></div>
+                  </div>
+                  <div class="info-row">
+                    <div class="ico" style="background:linear-gradient(145deg,#A78BFA,#7C3AED)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V9l8-5 8 5v11"/><path d="M9 20v-6h6v6"/></svg></div>
+                    <div><div class="t">隐藏门牌</div><div class="d">导出时默认隐藏精确门牌号。</div></div>
+                  </div>
+                  <div class="info-row">
+                    <div class="ico" style="background:linear-gradient(145deg,#67E8F9,#06B6D4)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"/><circle cx="12" cy="12" r="2.5"/></svg></div>
+                    <div><div class="t">隐藏详细地址</div><div class="d">导出时默认隐藏详细地址与照片元数据。</div></div>
+                  </div>
+                  <div class="info-row">
+                    <div class="ico" style="background:linear-gradient(145deg,#FBBF24,#F59E0B)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 3h7l3 3v15H7z"/><path d="M14 3v4h4"/></svg></div>
+                    <div><div class="t">合同照片</div><div class="d">导出默认不包含合同照片。</div></div>
+                  </div>
+                </div>
+                <p class="foot">以上脱敏项在导出时强制执行。风险提示仅为建议，不构成法律结论。</p>
+              </div>
+            </section>
+
+            <nav class="tabbar" id="tabbar" aria-label="Tab Bar">
+              <button type="button" class="active" data-tab-go="scan">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 20V9l8-5 8 5v11"/><path d="M9 20v-6h6v6"/></svg>
+                扫楼
+              </button>
+              <button type="button" data-tab-go="houses">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+                房源
+              </button>
+              <button type="button" data-tab-go="compare">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 5h6v14H5zM13 5h6v9h-6z"/></svg>
+                对比
+              </button>
+              <button type="button" data-tab-go="settings">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6L17 7M7 17l-1.4 1.4"/></svg>
+                设置
+              </button>
+            </nav>
+
+            <div class="overlay" id="overlay" aria-hidden="true">
+              <div class="sheet" role="dialog" aria-modal="true">
+                <div class="sheet-grab"></div>
+                <div id="sheetBody"></div>
+              </div>
+            </div>
+            <div class="toast" id="toast" role="status" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+      <div class="caption">iPhone 15 Pro · OLED True Black · Electric Sapphire · 功能全保留</div>
+    </div>
+  </div>
+
+  <script>
+    const state = {
+      screen: "scan",
+      villages: [
+        { id: "v1", name: "白石洲西区", buildings: 3, houses: 6, updated: "今天 14:20" },
+        { id: "v2", name: "水围新村", buildings: 2, houses: 4, updated: "昨天" },
+        { id: "v3", name: "大冲城市花园", buildings: 1, houses: 1, updated: "周一" },
+      ],
+      buildings: [
+        { id: "b1", name: "8 栋", houses: 3, note: "靠主干道 · 无电梯" },
+        { id: "b2", name: "12 栋", houses: 2, note: "有电梯 · 中介多" },
+        { id: "b3", name: "3 栋", houses: 1, note: "较新 · 待扫" },
+      ],
+      houses: [
+        { id: "h1", title: "8 栋 502", village: "白石洲西区", meta: "两房 · 2楼无电梯", price: 2800, score: 78, status: "shortlisted", buildingId: "b1" },
+        { id: "h2", title: "12 栋 301", village: "白石洲西区", meta: "两房 · 有电梯", price: 3100, score: 84, status: "active", buildingId: "b2" },
+        { id: "h3", title: "3 栋 1802", village: "白石洲西区", meta: "一房 · 未补清单", price: 2200, score: null, status: "draft", buildingId: "b3" },
+        { id: "h4", title: "水围 A2-601", village: "水围新村", meta: "两房 · 候选", price: 3000, score: 81, status: "shortlisted", buildingId: "" },
+        { id: "h5", title: "旧录 9 栋", village: "大冲城市花园", meta: "超预算淘汰", price: 5200, score: 55, status: "rejected", buildingId: "" },
+      ],
+      roomType: "两房",
+      houseFilter: "all",
+      checklist: { light: "ok", kitchen_ok: "good", deposit: "bad" },
+      currentBuildingId: "b1",
+      maskOn: true,
+    };
+
+    const checklistTemplate = [
+      { module: "room", title: "房间", items: [
+        { key: "light", label: "采光" }, { key: "noise", label: "噪音" }, { key: "damp", label: "潮湿/异味" },
+      ]},
+      { module: "kitchen", title: "厨卫", items: [
+        { key: "kitchen_ok", label: "可做饭" }, { key: "bath_private", label: "独卫" }, { key: "water_press", label: "水压" },
+      ]},
+      { module: "building", title: "楼栋", items: [
+        { key: "elevator", label: "电梯" }, { key: "corridor", label: "楼道安全" },
+      ]},
+      { module: "contract", title: "合同", items: [
+        { key: "deposit", label: "押金口径清楚" }, { key: "id_check", label: "对方身份可核验" },
+      ]},
+      { module: "risk", title: "风险", risk: true, items: [
+        { key: "non_live", label: "非居住空间" }, { key: "fire", label: "消防/楼栋异常" },
+      ]},
+    ];
+
+    const TAB_SCREENS = new Set(["scan", "houses", "compare", "compare-empty", "settings"]);
+    const $ = (s, r = document) => r.querySelector(s);
+    const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+    const colors = [
+      "linear-gradient(145deg,#60A5FA,#2563EB)",
+      "linear-gradient(145deg,#A78BFA,#7C3AED)",
+      "linear-gradient(145deg,#2DD4BF,#0D9488)",
+      "linear-gradient(145deg,#FBBF24,#F59E0B)",
+      "linear-gradient(145deg,#FB7185,#E11D48)",
+    ];
+
+    function toast(msg, pos = "top") {
+      const el = $("#toast");
+      el.textContent = msg;
+      el.classList.remove("bottom", "high");
+      if (pos === "bottom") el.classList.add("bottom");
+      if (pos === "high") el.classList.add("high");
+      el.classList.add("show");
+      clearTimeout(toast._t);
+      toast._t = setTimeout(() => el.classList.remove("show"), 2300);
+    }
+
+    function escapeHtml(s) {
+      return String(s).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
+    }
+
+    function statusChip(status) {
+      if (status === "shortlisted") return '<span class="chip blue">候选</span>';
+      if (status === "draft") return '<span class="chip">草稿</span>';
+      if (status === "rejected") return '<span class="chip rose">淘汰</span>';
+      if (status === "chosen") return '<span class="chip green">已定</span>';
+      return '<span class="chip">跟进</span>';
+    }
+
+    function houseRow(h) {
+      return `
+        <button type="button" class="row" data-open-house="${h.id}">
+          <div class="body">
+            <div class="title">${escapeHtml(h.title)}</div>
+            <div class="meta">${escapeHtml(h.village)} · ${escapeHtml(h.meta)}${h.score != null ? " · " + h.score + " 分" : ""}</div>
+          </div>
+          <div class="trail">
+            <span class="price">¥${Number(h.price).toLocaleString("zh-CN")}</span>
+            ${statusChip(h.status)}
+          </div>
+        </button>`;
+    }
+
+    function renderVillages() {
+      const list = $("#villageList");
+      const empty = $("#villageEmpty");
+      $("#statVillages").textContent = String(state.villages.length);
+      $("#statHouses").textContent = String(state.villages.reduce((s, v) => s + v.houses, 0));
+      if (!state.villages.length) {
+        list.innerHTML = "";
+        empty.classList.remove("hidden");
+        return;
+      }
+      empty.classList.add("hidden");
+      list.innerHTML = state.villages.map((v, i) => `
+        <button type="button" class="row" data-open-village="${v.id}">
+          <div class="avatar" style="background:${colors[i % colors.length]}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V9l8-5 8 5v11"/><path d="M9 20v-6h6v6"/></svg>
+          </div>
+          <div class="body">
+            <div class="title">${escapeHtml(v.name)}</div>
+            <div class="meta">${v.buildings} 栋 · ${v.houses} 套 · ${escapeHtml(v.updated)}</div>
+          </div>
+          <span class="chev"></span>
+        </button>
+      `).join("");
+    }
+
+    function renderBuildings() {
+      $("#buildingList").innerHTML = state.buildings.map((b, i) => `
+        <button type="button" class="row" data-open-building="${b.id}">
+          <div class="avatar" style="background:${colors[(i + 1) % colors.length]}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V4h10v17M14 8h6v13M8 8h2M8 12h2M8 16h2"/></svg>
+          </div>
+          <div class="body">
+            <div class="title">${escapeHtml(b.name)}</div>
+            <div class="meta">${escapeHtml(b.note)} · ${b.houses} 套</div>
+          </div>
+          <span class="chev"></span>
+        </button>
+      `).join("");
+    }
+
+    function renderRecentHouses() {
+      $("#houseListRecent").innerHTML = state.houses
+        .filter((h) => h.village === "白石洲西区" || h.buildingId)
+        .slice(0, 3).map(houseRow).join("");
+    }
+
+    function renderBuildingHouses() {
+      const b = state.buildings.find((x) => x.id === state.currentBuildingId);
+      const houses = state.houses.filter((h) => h.buildingId === state.currentBuildingId);
+      if (b) {
+        $("#buildingTitle").textContent = b.name;
+        $("#buildingSub").textContent = `白石洲西区 · ${houses.length || b.houses} 套`;
+      }
+      $("#buildingHouseList").innerHTML = houses.length
+        ? houses.map(houseRow).join("")
+        : `<div class="row plain"><div class="body"><div class="meta">本栋还没有房源，点下方快速记录。</div></div></div>`;
+    }
+
+    function renderAllHouses() {
+      const f = state.houseFilter;
+      const list = state.houses.filter((h) => (f === "all" ? true : h.status === f));
+      $("#allHouseList").innerHTML = list.length
+        ? list.map(houseRow).join("")
+        : `<div class="row plain"><div class="body"><div class="meta">该筛选下暂无房源。</div></div></div>`;
+    }
+
+    function renderChecklist() {
+      const root = $("#checklistRoot");
+      let answered = 0, total = 0;
+      root.innerHTML = checklistTemplate.map((mod) => {
+        const vals = mod.items.map((it) => state.checklist[it.key]).filter(Boolean);
+        answered += vals.length;
+        total += mod.items.length;
+        const pct = Math.round((vals.length / mod.items.length) * 100);
+        const labels = mod.risk
+          ? [["hit", "命中", "on-bad"], ["not_hit", "未命中", "on-good"], ["not_seen", "未看", "on-ns"]]
+          : [["good", "好", "on-good"], ["ok", "一般", "on-ok"], ["bad", "差", "on-bad"], ["not_seen", "未看", "on-ns"]];
+        return `
+          <div class="sec">${escapeHtml(mod.title)} <span>${vals.length}/${mod.items.length}</span></div>
+          <div class="glass-solid">
+            <div class="prog"><i style="width:${pct}%"></i></div>
+            ${mod.items.map((it) => {
+              const cur = state.checklist[it.key];
+              return `
+                <div class="check-item">
+                  <div class="lab">${escapeHtml(it.label)}</div>
+                  <div class="check-seg ${mod.risk ? "three" : ""}" data-check-key="${it.key}">
+                    ${labels.map(([v, lab, cls]) => `<button type="button" data-check-val="${v}" class="${cur === v ? cls : ""}">${lab}</button>`).join("")}
+                  </div>
+                </div>`;
+            }).join("")}
+          </div>`;
+      }).join("");
+      $("#checkProgress").textContent = `${answered}/${total}`;
+    }
+
+    function updateWeightSum() {
+      const sum = $$("#weightCard input[type=range]").reduce((s, el) => s + Number(el.value), 0);
+      const el = $("#weightSum");
+      el.textContent = `合计 ${sum}%。保存时仅提醒，不强制。`;
+      el.style.color = sum === 100 ? "" : "var(--amber)";
+    }
+
+    function showScreen(name) {
+      state.screen = name;
+      $$(".view").forEach((el) => el.classList.toggle("active", el.id === "view-" + name));
+      $$("#sideNavMain button, #sideNavSub button").forEach((btn) => {
+        btn.classList.toggle("active", btn.dataset.go === name);
+      });
+      const view = $("#view-" + name);
+      const tab = view?.dataset.tab || name;
+      const tabKey = tab === "compare-empty" ? "compare" : tab;
+      $$("#tabbar button").forEach((btn) => btn.classList.toggle("active", btn.dataset.tabGo === tabKey));
+      $("#tabbar").style.display = TAB_SCREENS.has(name) ? "grid" : "none";
+      closeSheet();
+      if (name === "checklist") renderChecklist();
+      if (name === "building") renderBuildingHouses();
+      if (name === "houses") renderAllHouses();
+      if (name === "preference") updateWeightSum();
+    }
+
+    function openSheet(mode) {
+      const body = $("#sheetBody");
+      if (mode === "village") {
+        body.innerHTML = `
+          <h2>新增村</h2>
+          <p class="desc">字段尽量少：名称必填，备注可选。</p>
+          <div class="glass-solid" style="margin:0 16px">
+            <div class="field"><label for="newVillageName">名称</label><input id="newVillageName" type="text" placeholder="水围新村" style="text-align:right" /></div>
+            <div class="field"><label for="newVillageNote">备注</label><input id="newVillageNote" type="text" placeholder="可选" style="text-align:right" /></div>
+          </div>
+          <div class="sheet-actions">
+            <button type="button" class="btn btn-soft" data-action="close-sheet">取消</button>
+            <button type="button" class="btn btn-primary" data-action="confirm-add-village">添加</button>
+          </div>`;
+      } else {
+        body.innerHTML = `
+          <h2>新增楼栋</h2>
+          <p class="desc">在本村下创建楼栋，再录房源。</p>
+          <div class="glass-solid" style="margin:0 16px">
+            <div class="field"><label for="newBuildingName">楼栋</label><input id="newBuildingName" type="text" placeholder="15 栋" style="text-align:right" /></div>
+            <div class="field"><label for="newBuildingNote">备注</label><input id="newBuildingNote" type="text" placeholder="可选" style="text-align:right" /></div>
+          </div>
+          <div class="sheet-actions">
+            <button type="button" class="btn btn-soft" data-action="close-sheet">取消</button>
+            <button type="button" class="btn btn-primary" data-action="confirm-add-building">添加</button>
+          </div>`;
+      }
+      $("#overlay").classList.add("show");
+      $("#overlay").setAttribute("aria-hidden", "false");
+    }
+
+    function closeSheet() {
+      $("#overlay").classList.remove("show");
+      $("#overlay").setAttribute("aria-hidden", "true");
+    }
+
+    function applyTheme(key) {
+      $("#deviceScreen").dataset.accent = key;
+      $$("#swatches .swatch").forEach((s) => s.classList.toggle("on", s.dataset.theme === key));
+    }
+
+    document.addEventListener("click", (e) => {
+      const t = e.target.closest(
+        "[data-go],[data-tab-go],[data-action],[data-open-village],[data-open-house],[data-open-building],[data-theme],[data-val],[data-mode],[data-filter],[data-check-val],[data-hard],#autoScoreToggle,#maskToggle"
+      );
+      if (!t) {
+        if (e.target.id === "overlay") closeSheet();
+        return;
+      }
+      if (t.id === "autoScoreToggle") {
+        t.classList.toggle("on");
+        toast(t.classList.contains("on") ? "已开启自动评分" : "已关闭自动评分", "high");
+        return;
+      }
+      if (t.id === "maskToggle") {
+        t.classList.toggle("on");
+        state.maskOn = t.classList.contains("on");
+        return;
+      }
+      if (t.dataset.hard != null) { t.classList.toggle("on"); return; }
+      if (t.dataset.go) { showScreen(t.dataset.go); return; }
+      if (t.dataset.tabGo) {
+        showScreen(({ scan: "scan", houses: "houses", compare: "compare", settings: "settings" })[t.dataset.tabGo] || t.dataset.tabGo);
+        return;
+      }
+      if (t.dataset.openVillage) {
+        const v = state.villages.find((x) => x.id === t.dataset.openVillage);
+        if (v) {
+          $("#villageTitle").textContent = v.name;
+          $("#villageSub").textContent = `${v.buildings} 栋 · ${v.houses} 套 · ${v.updated}`;
+        }
+        showScreen("village");
+        return;
+      }
+      if (t.dataset.openBuilding) {
+        state.currentBuildingId = t.dataset.openBuilding;
+        showScreen("building");
+        return;
+      }
+      if (t.dataset.openHouse) {
+        const h = state.houses.find((x) => x.id === t.dataset.openHouse);
+        if (h) $("#detailTitle").textContent = h.title;
+        showScreen("detail");
+        return;
+      }
+      if (t.dataset.theme) {
+        applyTheme(t.dataset.theme);
+        toast("强调色已更新", "high");
+        return;
+      }
+      if (t.dataset.val && t.closest("#roomTypeSeg")) {
+        state.roomType = t.dataset.val;
+        $$("#roomTypeSeg button").forEach((b) => b.classList.toggle("on", b === t));
+        return;
+      }
+      if (t.dataset.mode && t.closest("#commuteSeg")) {
+        $$("#commuteSeg button").forEach((b) => b.classList.toggle("on", b === t));
+        return;
+      }
+      if (t.dataset.filter) {
+        state.houseFilter = t.dataset.filter;
+        $$("#houseFilters .filter").forEach((b) => b.classList.toggle("on", b === t));
+        renderAllHouses();
+        return;
+      }
+      if (t.dataset.checkVal) {
+        const key = t.closest("[data-check-key]")?.dataset.checkKey;
+        if (!key) return;
+        if (state.checklist[key] === t.dataset.checkVal) delete state.checklist[key];
+        else state.checklist[key] = t.dataset.checkVal;
+        renderChecklist();
+        return;
+      }
+
+      switch (t.dataset.action) {
+        case "open-add-village": showScreen("scan"); openSheet("village"); break;
+        case "open-add-building": openSheet("building"); break;
+        case "close-sheet": closeSheet(); break;
+        case "confirm-add-village": {
+          const name = $("#newVillageName")?.value.trim();
+          if (!name) { toast("请填写村名", "high"); return; }
+          state.villages.unshift({ id: "v" + Date.now(), name, buildings: 0, houses: 0, updated: "刚刚" });
+          renderVillages(); closeSheet(); toast("已添加「" + name + "」"); break;
+        }
+        case "confirm-add-building": {
+          const name = $("#newBuildingName")?.value.trim();
+          if (!name) { toast("请填写楼栋名", "high"); return; }
+          const note = $("#newBuildingNote")?.value.trim() || "新建";
+          state.buildings.unshift({ id: "b" + Date.now(), name, houses: 0, note });
+          if (state.villages[0]) state.villages[0].buildings += 1;
+          renderBuildings(); renderVillages(); closeSheet(); toast("已添加「" + name + "」"); break;
+        }
+        case "open-add-house": showScreen("record"); break;
+        case "save-draft": toast("草稿已保存到本机", "high"); break;
+        case "save-and-open": {
+          const rent = Number($("#rentInput").value || 0);
+          const h = {
+            id: "h" + Date.now(), title: "新草稿 · " + state.roomType, village: "白石洲西区",
+            meta: state.roomType + " · 刚刚", price: rent || 0, score: null, status: "draft",
+            buildingId: state.currentBuildingId,
+          };
+          state.houses.unshift(h);
+          const b = state.buildings.find((x) => x.id === state.currentBuildingId);
+          if (b) b.houses += 1;
+          if (state.villages[0]) state.villages[0].houses += 1;
+          renderAll();
+          $("#detailTitle").textContent = h.title;
+          showScreen("detail"); toast("已保存到本机"); break;
+        }
+        case "add-compare": showScreen("compare"); toast("已加入对比"); break;
+        case "export-pdf":
+          toast(state.maskOn ? "已生成脱敏 PDF（示意）" : "已导出（含敏感字段）", "bottom"); break;
+        case "save-preference": {
+          const sum = $$("#weightCard input[type=range]").reduce((s, el) => s + Number(el.value), 0);
+          toast(sum === 100 ? "偏好已保存" : `权重合计 ${sum}% · 已保存`, "high");
+          showScreen("settings"); break;
+        }
+        default: break;
+      }
+    });
+
+    document.addEventListener("input", (e) => {
+      if (e.target.matches("#weightCard input[type=range]")) {
+        const key = e.target.dataset.w;
+        const label = document.querySelector(`[data-wlabel="${key}"]`);
+        if (label) label.textContent = e.target.value;
+        updateWeightSum();
+      }
+    });
+
+    $("#addPhotoBtn")?.addEventListener("click", () => {
+      toast("已模拟拍照", "high");
+      const rail = $(".photos");
+      const tile = document.createElement("div");
+      tile.className = "photo shot";
+      tile.textContent = "新拍";
+      rail.appendChild(tile);
+    });
+
+    function renderAll() {
+      renderVillages(); renderBuildings(); renderRecentHouses();
+      renderBuildingHouses(); renderAllHouses(); renderChecklist();
+    }
+
+    renderAll();
+    showScreen("scan");
+  </script>
+</body>
+</html>

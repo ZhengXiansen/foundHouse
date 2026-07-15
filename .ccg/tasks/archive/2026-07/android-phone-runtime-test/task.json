@@ -1,0 +1,12 @@
+{
+  "status": "completed",
+  "currentPhase": "completed",
+  "title": "Android 真机 USB 调试后继续 Flutter 运行测试",
+  "domain": "mobile",
+  "risk": "low",
+  "complexity": "S",
+  "createdAt": "2026-07-03T19:12:36Z",
+  "nextAction": "归档任务",
+  "id": "android-phone-runtime-test",
+  "branch": "unknown"
+}

@@ -1,0 +1,12 @@
+{
+  "complexity": "S",
+  "createdAt": "2026-07-08T00:51:09.412488Z",
+  "title": "重新安装 release APK",
+  "branch": null,
+  "id": "reinstall-release-apk",
+  "nextAction": "已重新构建并覆盖安装 release APK，已采集设备启动验证证据",
+  "status": "completed",
+  "risk": "low",
+  "currentPhase": "completed",
+  "domain": "mobile"
+}

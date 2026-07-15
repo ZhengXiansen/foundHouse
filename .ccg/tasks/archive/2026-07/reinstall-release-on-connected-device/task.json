@@ -1,0 +1,12 @@
+{
+  "id": "reinstall-release-on-connected-device",
+  "title": "构建并安装 Android 正式版到已连接真机",
+  "status": "completed",
+  "complexity": "S",
+  "risk": "high",
+  "domain": "release",
+  "currentPhase": "completed",
+  "nextAction": "已完成安装验证并归档",
+  "createdAt": "2026-07-10T05:40:00+08:00",
+  "branch": "main"
+}

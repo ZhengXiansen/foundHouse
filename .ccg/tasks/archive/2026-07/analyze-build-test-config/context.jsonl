@@ -1,0 +1,11 @@
+{"path":"CLAUDE.md","reason":"root project status, environment constraints"}
+{"path":"found-house-app/pubspec.yaml","reason":"Flutter dependencies and SDK constraints"}
+{"path":"found-house-app/build.yaml","reason":"Drift codegen config"}
+{"path":"found-house-app/lib/data/providers.dart","reason":"FOUND_HOUSE_BFF_BASE_URL dart-define"}
+{"path":"found-house-app/lib/integrations/amap/amap_client.dart","reason":"BFF endpoint contract from app"}
+{"path":"found-house-bff/package.json","reason":"BFF scripts and Node engine"}
+{"path":"found-house-bff/src/app.ts","reason":"BFF runtime host/port and routes"}
+{"path":"found-house-bff/src/modules/map/amap.client.ts","reason":"AMAP_WEBSERVICE_KEY requirement"}
+{"path":"found-house-bff/src/infra/redis.ts","reason":"REDIS_URL optional cache"}
+{"path":"found-house-bff/src/infra/db.ts","reason":"DATABASE_URL optional Postgres"}
+{"path":"found-house-bff/src/infra/rate-limit.ts","reason":"rate limit env vars"}

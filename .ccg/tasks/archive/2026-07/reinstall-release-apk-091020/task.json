@@ -1,0 +1,12 @@
+{
+  "id": "reinstall-release-apk-091020",
+  "title": "重新安装 Flutter Android release APK",
+  "status": "completed",
+  "complexity": "S",
+  "risk": "low",
+  "domain": "mobile-release",
+  "currentPhase": "completed",
+  "nextAction": "归档任务；root 非 git 仓库则记录无法提交",
+  "createdAt": "2026-07-08T01:10:20Z",
+  "branch": "none"
+}

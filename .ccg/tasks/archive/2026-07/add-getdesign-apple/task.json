@@ -1,0 +1,14 @@
+{
+  "id": "add-getdesign-apple",
+  "title": "Run npx getdesign@latest add apple",
+  "status": "completed",
+  "complexity": "S",
+  "risk": "low",
+  "domain": "tooling",
+  "currentPhase": "completed",
+  "nextAction": "Archived",
+  "createdAt": "2026-07-14T13:07:09Z",
+  "branch": "none",
+  "completedAt": "2026-07-14T13:16:20Z",
+  "archiveCommit": "not_applicable_workspace_root_is_not_git"
+}

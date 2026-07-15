@@ -1,0 +1,12 @@
+{
+  "complexity": "M",
+  "title": "分析项目代码并给出编译打包测试与手动配置清单",
+  "domain": "project",
+  "branch": "unknown",
+  "risk": "low",
+  "nextAction": "已输出编译打包测试与手动配置清单",
+  "status": "completed",
+  "currentPhase": "completed",
+  "id": "analyze-build-test-config",
+  "createdAt": "2026-07-03T17:23:45Z"
+}
