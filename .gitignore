@@ -1,14 +1,60 @@
-# Local AI/tool caches
-.ace-tool/
+# Local AI/agent tool state
+/.ace-tool/
+/.aeroric/
+/.agents/
+/.claude/
+/.impeccable.md
 
-# OS and editor files
+# CCG governance
+# Keep specs and only the durable task metadata required by the project workflow.
+/.ccg/tasks/**
+!/.ccg/tasks/**/
+!/.ccg/tasks/**/task.json
+!/.ccg/tasks/**/requirements.md
+!/.ccg/tasks/**/plan.md
+!/.ccg/tasks/**/review.md
+!/.ccg/tasks/**/context.jsonl
+
+# Generated visual/test artifacts
+/img/
+/found-house-app/.screenshots/
+
+# OS files
 .DS_Store
+.AppleDouble
+.LSOverride
+._*
 Thumbs.db
-*.swp
-*.tmp
-*.log
+Thumbs.db:encryptable
+Desktop.ini
+$RECYCLE.BIN/
+
+# Editors and IDEs
 .idea/
 .vscode/
+.fleet/
+*.iml
+*.swp
+*.swo
+*~
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Logs, temporary files, and local caches
+*.log
+*.tmp
+*.temp
+*.bak
+*.orig
+*.rej
+*.pid
+*.pid.lock
+.cache/
+.tmp/
+/tmp/
+/temp/
 
 # Environment files and credentials
 .env
@@ -26,9 +72,22 @@ Thumbs.db
 
 # Node.js / TypeScript
 **/node_modules/
-**/dist/
-**/coverage/
+/found-house-bff/dist/
+/found-house-bff/coverage/
+**/.next/
+**/.nuxt/
+**/.output/
+**/.turbo/
+**/.npm/
+**/.pnpm-store/
+**/.yarn/cache/
+**/.yarn/unplugged/
 *.tsbuildinfo
+.eslintcache
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
 # Flutter / Dart
 **/.dart_tool/
@@ -36,16 +95,31 @@ Thumbs.db
 **/.flutter-plugins-dependencies
 **/.pub-cache/
 **/.pub/
-**/build/
+**/.packages
+**/.fvm/
 
 # Android / native build caches
 **/.gradle/
+**/.kotlin/
 **/.cxx/
+**/.externalNativeBuild/
+**/captures/
 *.apk
 *.aab
 *.ipa
 *.dSYM/
+*.hprof
+
+# Apple platform dependencies and user state
+/found-house-app/ios/Pods/
+**/DerivedData/
+**/*.xcworkspace/xcuserdata/
+**/*.xcodeproj/xcuserdata/
+**/*.xcuserstate
 
 # Python caches used by local tools
 **/__pycache__/
+**/.pytest_cache/
+**/.mypy_cache/
+**/.ruff_cache/
 *.py[cod]

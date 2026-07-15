@@ -1,0 +1,12 @@
+{
+  "id": "ignore-non-code-files",
+  "title": "完善 Git 忽略规则并排除非代码本地文件",
+  "status": "completed",
+  "complexity": "M",
+  "risk": "medium",
+  "domain": "devops",
+  "currentPhase": "completed",
+  "nextAction": "归档任务并提交归档记录",
+  "createdAt": "2026-07-15T00:00:00+08:00",
+  "branch": "main"
+}
