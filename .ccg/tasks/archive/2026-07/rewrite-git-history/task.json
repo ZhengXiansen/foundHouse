@@ -1,12 +1,12 @@
 {
   "id": "rewrite-git-history",
   "title": "重写 Git 历史并强制推送清理非代码文件",
-  "status": "in_progress",
+  "status": "completed",
   "complexity": "M",
   "risk": "high",
   "domain": "devops",
-  "currentPhase": "review",
-  "nextAction": "提交审查 checkpoint，显式 force-with-lease 推送并从远端 fresh clone 复验",
+  "currentPhase": "completed",
+  "nextAction": "已完成历史重写、force-with-lease 推送和远端复验，归档任务",
   "createdAt": "2026-07-15T00:00:00+08:00",
   "branch": "main"
 }

@@ -63,3 +63,20 @@
 ## 当前结论
 
 历史重写、备份和本地验证通过；可进入活动任务 checkpoint 提交及显式 `--force-with-lease` 推送。最终远端验证与任务归档待推送后完成。
+
+## 推送与远端最终验证
+
+- 显式 lease 基准：`8e05e49450cca5d9e98e420fe8efe7a704ceb01f`
+- force-with-lease dry-run：通过
+- force-with-lease 实际推送：`8e05e49` → `d0320f690229b109af4d82d116eaa20bfa386974`，通过
+- GitHub fresh clone HEAD：`d0320f690229b109af4d82d116eaa20bfa386974`
+- 远端 fresh clone `git fsck --full --strict`：通过
+- 远端历史当前 `.gitignore` 命中：0
+- 811 个删除路径残留：0
+- 原 140 个 CCG 保留路径缺失：0
+- checkpoint 父提交 tip tree 与重写前 tip tree 一致
+- 远端 refs：main 与 origin/main 均指向新 HEAD，无 tags/额外 branch
+
+## 最终结论
+
+历史重写、强制推送和远端复验均已完成；无 Critical 问题，任务可归档。
